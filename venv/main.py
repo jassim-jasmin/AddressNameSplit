@@ -4,12 +4,13 @@ import time
 
 from DB import sqlDB
 
-jsonPatternFile = open('pattern.json', 'r')
-jsonData = json.loads(jsonPatternFile.read())
-addressExtract = jsonData['address']
-nameExtract = jsonData['name']
-obj = sqlDB()
+def extract(schemaName, tableName, idColumn, fieldName, outFiledName,nameOrAddress):
+    jsonPatternFile = open('pattern.json', 'r')
+    jsonData = json.loads(jsonPatternFile.read())
+    obj = sqlDB()
+    name = jsonData[nameOrAddress]
+    for pattern in name:
+        obj.zillowUpdate(schemaName, tableName, idColumn, fieldName, outFiledName, 'where ' + pattern['where'],
+                         pattern['pattern'], pattern['group'])
 
-for addressPattern in addressExtract:
-    #print(addressPattern['pattern'])
-    obj.zillowUpdate('testj', 'pe_owner', 'id', 'ADDRESS1', 'address_extract', 'where ' + addressPattern['where'], addressPattern['pattern'], addressPattern['group'])
+extract('testj', 'pe_owner', 'id', 'ADDRESS1', 'address_extract', 'address')
