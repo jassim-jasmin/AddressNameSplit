@@ -16,14 +16,14 @@ class sqlDB:
     def connect(self):
         try:
             self.mydb = mysql.connector.connect(host=self.sqlHost, user=self.sqlUserName, password=self.sqlPassword)
-            print(self.mydb)
+            #print(self.mydb)
         except Exception as e:
             print("Database connection error", e)
 
     def connectSchema(self,sqlSchema):
         try:
             self.mydb = mysql.connector.connect(host=self.sqlHost, user=self.sqlUserName, password=self.sqlPassword, database=sqlSchema)
-            print(self.mydb)
+            #print(self.mydb)
         except Exception as e:
             print("Connection problem in schema",e)
 
@@ -52,7 +52,7 @@ class sqlDB:
         try:
             mycursor = self.mydb.cursor()
             sql = "select " + idColumnName + "," + searchColumnName + " from " + tableName + " " + sqlWhere
-            print(sql)
+            #print(sql)
             mycursor.execute(sql)
 
             idAndPatternString = []
