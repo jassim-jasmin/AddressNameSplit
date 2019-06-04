@@ -2,22 +2,42 @@
   "address":
             [
               {
-                "pattern": "((([0-9]+ *)?([Pp] *[.,]? *[Oo0] *[,.]? *)[Bb] *[,.]?[Oo] *[.,]?[Xx] *[,.]?).*)",
+                "pattern": "((([0-9]+ *)?(([pP][oO][sS][tT] *[oO][fF][fF][iI][cC][eE])|([Pp] *[.,]? *([0Oo]|[bB])? *[,.]? *)) *[Bb] *[,.]?[Oo] *[.,]?[Xx] *[,.]?).*)",
                 "where": "ADDRESS1 like '%box%' and address_extract is null",
                 "group": 1
               },
               {
-                "pattern": "((([0-9]+ *)?(([pP][oO][sS][tT] *[oO][fF][fF][iI][cC][eE])|([Pp][.]? *[Oo][.]? *))[Bb][.]?[Oo0][.]?[Xx][.]?).*)",
+                "pattern": "((([0-9]+ *)?(([pP][oO0][sS][tT] *[oO0][fF][fF][iI][cC][eE])|([Pp][.,]? *([0Oo]|[bB])[.,]? *))[Bb][.,]?[Oo0][.,]?[Xx][.,]?).*)",
                 "where": "ADDRESS1 like '%box%' and address_extract is null",
                 "group": 1
               },
               {
-                "pattern": "((([rR][oO]?[uU]?[tT][eE]?) *([0-9]+ *)?([bB] *[.,]? *[Oo0] *[.,]? *[xX]).*(([Rr][dD])|([rR][oO0][aA][dD]))))( *$)",
+                "pattern": "((([rR][oO0]?[uU]?[tT][eE]?) *([0-9]+ *)?([bB] *[.,]? *[Oo0] *[.,]? *[xX]).*(([Rr][dD])|([rR][oO0][aA][dD]))))( *$)",
                 "where": "ADDRESS1 like '%box%' and address_extract is null",
                 "group": 1
               },
               {
-                "pattern": "(([Rr][Oo]?[UU]?[Tt][eE]?) *[0-9]* ([bB][oO0][xX]) .*)",
+                "pattern": "(([Rr][0Oo]?[UU]?[Tt][eE]?)[.,]? *[0-9]* *([bB][oO0][xX]).*)",
+                "where": "ADDRESS1 like '%box%' and address_extract is null",
+                "group": 1
+              },
+              {
+                "pattern": "(^([bB][oO0][xX]) *[0-9]+$)",
+                "where": "ADDRESS1 like '%box%' and address_extract is null",
+                "group": 1
+              },
+              {
+                "pattern": "(^([bB][oO0][xX]) *[0-9]+ *.*([Rr][oO]?[aA]?[dD])$)",
+                "where": "ADDRESS1 like '%box%' and address_extract is null",
+                "group": 1
+              },
+              {
+                "pattern": "(^[0-9]+ *[a-zA-Z]* *[Bb][oO0][xX] .*([Rr][oO0]?[aA]?[dD])$)",
+                "where": "ADDRESS1 like '%box%' and address_extract is null",
+                "group": 1
+              },
+              {
+                "pattern": "(^([bB][oO0][xX]) *[0-9]+.* (([sS][tT])|([dD][rR])|([rR][oO0]?[aA]?[dD]?))[.]?$)",
                 "where": "ADDRESS1 like '%box%' and address_extract is null",
                 "group": 1
               }
