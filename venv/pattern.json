@@ -1,0 +1,32 @@
+{
+  "address":
+            [
+              {
+                "pattern": "((([0-9]+ *)?([Pp] *[.,]? *[Oo0] *[,.]? *)[Bb] *[,.]?[Oo] *[.,]?[Xx] *[,.]?).*)",
+                "where": "ADDRESS1 like '%box%' and address_extract is null",
+                "group": 1
+              },
+              {
+                "pattern": "((([0-9]+ *)?(([pP][oO][sS][tT] *[oO][fF][fF][iI][cC][eE])|([Pp][.]? *[Oo][.]? *))[Bb][.]?[Oo0][.]?[Xx][.]?).*)",
+                "where": "ADDRESS1 like '%box%' and address_extract is null",
+                "group": 1
+              },
+              {
+                "pattern": "((([rR][oO]?[uU]?[tT][eE]?) *([0-9]+ *)?([bB] *[.,]? *[Oo0] *[.,]? *[xX]).*(([Rr][dD])|([rR][oO0][aA][dD]))))( *$)",
+                "where": "ADDRESS1 like '%box%' and address_extract is null",
+                "group": 1
+              },
+              {
+                "pattern": "(([Rr][Oo]?[UU]?[Tt][eE]?) *[0-9]* ([bB][oO0][xX]) .*)",
+                "where": "ADDRESS1 like '%box%' and address_extract is null",
+                "group": 1
+              }
+            ],
+  "name":
+  [
+    {
+      "pattern": "",
+      "where": ""
+    }
+  ]
+}
