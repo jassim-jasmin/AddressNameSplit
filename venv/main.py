@@ -13,6 +13,7 @@ def extract(schemaName, tableName, idColumn, fieldName, outFiledName,nameOrAddre
     for pattern in name:
         jsonIndex = jsonIndex + 1
         print("json index: ", jsonIndex)
+        print(pattern)
         obj.zillowUpdate(schemaName, tableName, idColumn, fieldName, outFiledName, 'where ' + fieldName + " "+ pattern['where'] + " and " + outFiledName + " is null",
                          pattern['pattern'], pattern['group'])
 
