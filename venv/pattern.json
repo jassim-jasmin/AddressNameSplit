@@ -84,6 +84,10 @@
                 "where": "like '%box%'",
                 "group": 1,
                 "_comment": "123 box test NEWS                              11"
+              },
+              {
+                "pattern": "(^[pP] *[.,]? *[oO0] *[,.]? *[bB] *[.,]? *[oO0] *[.,]? *[xX] *[,.]? *[a-zA-Z]$)",
+                "where": "like '%box%'"
               }
             ],
   "name":
