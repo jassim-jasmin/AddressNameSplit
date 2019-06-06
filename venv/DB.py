@@ -52,27 +52,37 @@ class sqlDB:
         try:
             mycursor = self.mydb.cursor()
             sql = "select " + idColumnName + "," + searchColumnName + " from " + tableName + " " + sqlWhere
-            #print(sql)
             mycursor.execute(sql)
 
             idAndPatternString = []
-
+            data = dict()
+            indexLimit = 50000
+            index = -1
+            dataIndex = -1
             for id, searchData in mycursor:
+                index = index+1
                 rePattern = eval("re.compile(r'" + pyRe + "')")
 
                 if searchData:
                     if rePattern.search(searchData):
                         idAndPatternString.append((rePattern.search(searchData).group(int(gNo)),id))
-            return idAndPatternString
+                        if index%indexLimit == 0 or mycursor.rowcount == index:
+                            dataIndex = dataIndex+1
+                            data[dataIndex] = idAndPatternString
+                            idAndPatternString = []
+                            print(dataIndex,index)
+            #print(data[0][1])
+            return data
         except Exception as e:
             print(e)
 
     def insertField(self, tableName, idColumnName, searchColumnName, insertColumnName, sqlWhere, pyRe, gNo):
         try:
-            data = self.regexData(tableName,idColumnName, searchColumnName, sqlWhere, pyRe, gNo)
             mycursor = self.mydb.cursor()
-            print(data)
-            mycursor.executemany("update " + tableName + " set " + insertColumnName + " = %s where " + idColumnName + " = %s", data)
+            data = self.regexData(tableName,idColumnName, searchColumnName, sqlWhere, pyRe, gNo)
+            for index,values in data.items():
+                print("inserting")
+                mycursor.executemany("update " + tableName + " set " + insertColumnName + " = %s where " + idColumnName + " = %s", values)
         except Exception as e:
             print(e)
 
