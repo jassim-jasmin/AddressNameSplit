@@ -8,12 +8,12 @@
                 "_comment": "abc box 123                                    0"
               },
               {
-                "pattern": "((((^[0-9]+ +)|(^[a-zA-Z]+ +)|(^((newsNEWS])|([Nn]([EWS]|[ews]) +)|([Ee]([NWS]|[nws]) +)|([Ww]([NES]|[nes]) +)|([Ss]([NEW]|[new])) +))) *[a-zA-Z]* *[a-zA-Z]* *(( +SUITE($| +))|((^UNIT +)|( +UNITE?($| +)))|( *PLACE($| +))|( +PL($| +))|( +TRL($| +))|( +BLVD($| +))|( +PLAZA($| +))|( +PL($| +))|( +RT($| +))|( +ROUTE($| +))|( +CT($| +))|( +PIKE($| +))|( +PKY($| +))|( +PK +)|( +PARKWAY +)|( +HWY($| +))|( +HIGHWAY($| +))|( +LN($| +))|( +LANE($| +))|( CIRCLE($| +))|( +CIR($| +))|( +AVE($| +))|( +AVENUE($| +))|( +DR($| +))|( +DRIVE($| +)))(([pP][oO0][sS][tT] *[oO0][fF][fF][iI][cC][eE])|([Pp] *[.,]*[\\[]? *[0OoBbpP]? *[,.]* *)) *[Bb] *[,.]*[Oo] *[.,]*[Xx] *[,.]*).*)",
+                "pattern": "(^(([0-9]+)|([a-zA-Z]+)|( *(([newsNEWS])|([Nn]([EWS]|[ews]) +)|([Ee]([NWS]|[nws]) +)|([Ww]([NES]|[nes]) +)|([Ss]([NEW]|[new])) +))) *[a-zA-Z]+ *[a-zA-Z]* *((( +[sS][uU][iI][tT][eE]($| +))|((^[uU][nN][iI][tT][eE]? +)|( *[pP][lL][aA]?[cC]?[eE]?($| +))|( +[tT][rR][lL]($| +))|( +[bB][lL][vV][dD]($| +))|( +[pP][lL][aA]?[zZ]?[aA]?($| +))|( +[rR][oO0]?[uU]?[tT][eE]?($| +))|( +[cC][tT]($| +))|( +[pP][iI][kK][eE]($| +))|( +[pP][aA]?[rR]?[kK][wW]?[aA]?[yY]? +)|( +HWY($| +))|( +[hH][iI]?[gG]?[hH]?[wW][aA]?[yY]($| +))|( +[lL][aA]?[nN][eE]?($| +))|( +[cC][iI][rR][cC]?[lL]?[eE]?($| +))|( +AVE($| +))|( +[aA][vV][eE]?[nN]?[uU]?[eE]($| +))|( +[dD][rR][iI]?[vV]?[eE]?($| +))|( +[rR][oO0]?[aA]?[dD])|([sS][tT]?[rR]?[eE]?[eE]?[tT]?)))) *([pP] *[,.]*[0OoBbpP] *[,.]* *[bB] *[,.]*[oO0] *[,.]*[xX][,.]*).*)",
                 "where": "like '%box%'",
                 "_comment": "8519 LA GRANGE HWY P O BOX 429"
               },
               {
-                "pattern": "((([0-9]+ *)?(([pP][oO0][sS][tT] *[oO0][fF][fF][iI][cC][eE])|([Pp] *[.,]*[\\[]? *[0OoBbpP]? *[,.]* *)) *[Bb] *[,.]*[Oo] *[.,]*[Xx] *[,.]*).*)",
+                "pattern": "((([0-9]+ *)?(([pP][oO0][sS][tT] *[oO0][fF][fF][iI][cC][eE])|([Pp] *[.,]*[\\[]? *[0OoBbpP]? *[0OoBbpP]? *[,.]* *)) *[Bb] *[,.]*[Oo] *[.,]*[Xx] *[,.]*).*)",
                 "where": "like '%box%'",
                 "group": 1,
                 "_comment": "123 post office/p\\ob box test                 1"
