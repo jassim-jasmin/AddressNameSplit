@@ -66,12 +66,13 @@ class sqlDB:
                 if searchData:
                     if rePattern.search(searchData):
                         idAndPatternString.append((rePattern.search(searchData).group(int(gNo)),id))
-                        if index%indexLimit == 0 or mycursor.rowcount == index:
+                        #print(mycursor.rowcount,index)
+                        if (index%indexLimit == 0) or (mycursor.rowcount-1 == index):
                             dataIndex = dataIndex+1
                             data[dataIndex] = idAndPatternString
                             idAndPatternString = []
-                            print(dataIndex,index)
-            #print(data[0][1])
+                            #print(dataIndex,index)
+            print(index)
             return data
         except Exception as e:
             print(e)
@@ -81,7 +82,7 @@ class sqlDB:
             mycursor = self.mydb.cursor()
             data = self.regexData(tableName,idColumnName, searchColumnName, sqlWhere, pyRe, gNo)
             for index,values in data.items():
-                print("inserting")
+                #print("inserting")
                 mycursor.executemany("update " + tableName + " set " + insertColumnName + " = %s where " + idColumnName + " = %s", values)
         except Exception as e:
             print(e)
