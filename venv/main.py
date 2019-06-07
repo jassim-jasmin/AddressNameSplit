@@ -4,40 +4,70 @@ import time
 
 from DB import sqlDB
 
-jsonPatternFile = open('pattern.json', 'r')
-jsonData = json.loads(jsonPatternFile.read())
-obj = sqlDB()
+class Extraction:
+    jsonPatternFile = open('pattern.json', 'r')
+    jsonData = json.loads(jsonPatternFile.read())
+    obj = sqlDB()
 
-def extract(schemaName, tableName, idColumn, fieldName, outFiledName,nameOrAddress):
-    name = jsonData[nameOrAddress]
-    jsonIndex = -1
-    for pattern in name:
-        jsonIndex = jsonIndex + 1
-        print("json index: ", jsonIndex)
-        #print(pattern)
-        obj.zillowUpdate(schemaName, tableName, idColumn, fieldName, outFiledName, 'where ' + fieldName + " "+ pattern['where'] + " and " + outFiledName + " is null",
-                         pattern['pattern'], pattern['group'])
+    def extract(self, schemaName, tableName, idColumn, fieldName, outFiledName, nameOrAddress):
+        name = self.jsonData[nameOrAddress]
+        jsonIndex = -1
+        for pattern in name:
+            jsonIndex = jsonIndex + 1
+            print("json index: ", jsonIndex)
+            # print(pattern)
+            self.obj.zillowUpdate(schemaName, tableName, idColumn, fieldName, outFiledName,
+                             'where ' + fieldName + " " + pattern['where'] + " and " + outFiledName + " is null",
+                             pattern['pattern'], pattern['group'])
 
-def partialExtract(schemaName, tableName, idColumn, fieldName, outFiledName,nameOrAddress):
-    name = jsonData[nameOrAddress + 'Partial']
+    def partialExtract(self, schemaName, tableName, idColumn, fieldName, outFiledName, nameOrAddress):
+        name = self.jsonData[nameOrAddress + 'Partial']
+        print(nameOrAddress + 'Partial')
+        if nameOrAddress == 'name':
+            otherName = fieldName+'_address_extract'
+        elif nameOrAddress == 'address':
+            otherName = fieldName+'_name_extract'
 
-    if nameOrAddress == 'name':
-        otherName = 'address_extract'
-    elif nameOrAddress == 'address':
-        otherName = 'name_extract'
+        jsonIndex = -1
+        for pattern in name:
+            jsonIndex = jsonIndex + 1
+            self.obj.zillowUpdate(schemaName, tableName, idColumn, fieldName, outFiledName,
+                             'where ' + fieldName + " " + pattern[
+                                 'where'] + " and " + outFiledName + " is null and " + otherName + " is null ",
+                             pattern['pattern'], pattern['group'])
+            #print(outFiledName + " is null and " + otherName + " is null ")
 
-    jsonIndex = -1
-    for pattern in name:
-        jsonIndex = jsonIndex + 1
-        print("json index: ", jsonIndex)
-        obj.zillowUpdate(schemaName, tableName, idColumn, fieldName, outFiledName,
-                         'where ' + fieldName + " " + pattern['where'] + " and " + outFiledName + " is null and " + otherName + " is null ",
-                         pattern['pattern'], pattern['group'])
+    def orderedExtractZillow(self, schemaName, tableName, idColumn, fieldName):
+        try:
+            self.obj.defaultZillow()
+            self.obj.connectSchema(schemaName)
+
+            self.obj.createColumn(tableName, fieldName+'_address_extract')
+            self.obj.createColumn(tableName, fieldName+'_name_extract')
+            self.obj.createColumn(tableName, fieldName + '_no_match')
+
+            self.extract(schemaName, tableName, idColumn, fieldName, fieldName+'_address_extract', 'address')
+            self.extract(schemaName, tableName, idColumn, fieldName, fieldName+'_name_extract', 'name')
+            self.partialExtract(schemaName, tableName, idColumn, fieldName, fieldName+'_name_extract', 'name')
+            self.partialExtract(schemaName, tableName, idColumn, fieldName, fieldName+'_address_extract', 'address')
+        except Exception as e:
+            print(e)
+
+extrac = Extraction()
 
 start = time.time()
-extract('testj', 'pe_owner', 'id', 'ADDRESS1', 'address_extract', 'address')
-extract('testj', 'pe_owner', 'id', 'ADDRESS1', 'name_extract', 'name')
-partialExtract('testj', 'pe_owner', 'id', 'ADDRESS1', 'name_extract', 'name')
-partialExtract('testj', 'pe_owner', 'id', 'ADDRESS1', 'address_extract', 'address')
+extrac.orderedExtractZillow( 'testj', 'pe_owner', 'id', 'ADDRESS1')
 end = time.time()
 print("Complete execution time: ", end-start)
+# obj = Extraction()
+#
+# start = time.time()
+# obj.extract('testj', 'pe_owner', 'id', 'ADDRESS1', 'address_extract', 'address')
+# obj.extract('testj', 'pe_owner', 'id', 'ADDRESS1', 'name_extract', 'name')
+# obj.partialExtract('testj', 'pe_owner', 'id', 'ADDRESS1', 'name_extract', 'name')
+# obj.partialExtract('testj', 'pe_owner', 'id', 'ADDRESS1', 'address_extract', 'address')
+# end = time.time()
+# print("Complete execution time: ", end-start)
+
+# Extraction.partialExtract(Extraction,'testj', 'pe_owner', 'id', 'ADDRESS1', 'address_extract', 'address')
+# Extraction.partialExtract(Extraction, 'testj', 'pe_owner', 'id', 'ADDRESS1', 'name_extract', 'name')

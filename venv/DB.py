@@ -72,7 +72,7 @@ class sqlDB:
                             data[dataIndex] = idAndPatternString
                             idAndPatternString = []
                             #print(dataIndex,index)
-            print(index)
+            #print(index)
             return data
         except Exception as e:
             print(e)
@@ -91,7 +91,7 @@ class sqlDB:
         try:
             self.defaultZillow()
             self.connectSchema(schemaName)
-            self.createColumn(tableName, insertColumnName)
+            #self.createColumn(tableName, insertColumnName)
             self.insertField(tableName, idColumnName, searchColumnName, insertColumnName, sqlWhere, pyRe, gNo)
         except Exception as e:
             print(e)
