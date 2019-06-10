@@ -45,8 +45,8 @@ class sqlDB:
 
             for c in mycursor:
                 return c[0]
-        except:
-            print("Error in count fetching")
+        except Exception as e:
+            print("count", e)
 
     def regexData(self, tableName, idColumnName, searchColumnName, sqlWhere, pyRe, gNo):
         try:
@@ -74,7 +74,7 @@ class sqlDB:
             #print(index)
             return data
         except Exception as e:
-            print(e)
+            print("regexData",e)
 
     def insertField(self, tableName, idColumnName, searchColumnName, insertColumnName, sqlWhere, pyRe, gNo):
         try:
@@ -82,9 +82,13 @@ class sqlDB:
             data = self.regexData(tableName,idColumnName, searchColumnName, sqlWhere, pyRe, gNo)
             for index,values in data.items():
                 mycursor.executemany("update " + tableName + " set " + insertColumnName + " = %s where " + idColumnName + " = %s", values)
-            self.mydb.commit()
+
         except Exception as e:
-            print(e)
+            print("insertField",e)
+
+        finally:
+            print("DB commit")
+            self.mydb.commit()
 
     def zillowUpdate(self, schemaName, tableName, idColumnName, searchColumnName,insertColumnName, sqlWhere, pyRe, gNo):
         try:
@@ -93,13 +97,13 @@ class sqlDB:
             #self.createColumn(tableName, insertColumnName)
             #print(tableName, idColumnName, searchColumnName, insertColumnName, sqlWhere, pyRe, gNo)
             self.insertField(tableName, idColumnName, searchColumnName, insertColumnName, sqlWhere, pyRe, gNo)
+
         except Exception as e:
-            print(e)
+            print("zillowUpdate",e)
 
         finally:
-            print("Terminated")
+            print("DB commit")
             self.mydb.commit()
-            self.mydb.close()
 
 
 # obj = sqlDB()
