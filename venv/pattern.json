@@ -143,9 +143,9 @@
   "addressPartial":
             [
               {
-                "pattern": " *[,.]?^([0-9].*)",
+                "pattern": "( *[,.]?|^)([0-9].*)",
                 "where": "regexp '[0-9]'",
-                "group": 1,
+                "group": 2,
                 "_comment": "all other possible address start with number                       0"
               }
             ]
