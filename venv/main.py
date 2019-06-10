@@ -22,7 +22,6 @@ class Extraction:
 
     def partialExtract(self, schemaName, tableName, idColumn, fieldName, outFiledName, nameOrAddress):
         name = self.jsonData[nameOrAddress + 'Partial']
-        print(nameOrAddress + 'Partial')
         if nameOrAddress == 'name':
             otherName = fieldName+'_address_extract'
         elif nameOrAddress == 'address':
@@ -50,6 +49,8 @@ class Extraction:
             self.extract(schemaName, tableName, idColumn, fieldName, fieldName+'_name_extract', 'name')
             self.partialExtract(schemaName, tableName, idColumn, fieldName, fieldName+'_name_extract', 'name')
             self.partialExtract(schemaName, tableName, idColumn, fieldName, fieldName+'_address_extract', 'address')
+            sqlWhere = fieldName+'_name_extract is null and ' + fieldName+'_address_extract is null and ' + fieldName + ' is not null'
+            #self.obj.insertField(tableName, idColumn, fieldName, fieldName + '_no_match', sqlWhere, ' *(.*)', 1)
         except Exception as e:
             print(e)
 
