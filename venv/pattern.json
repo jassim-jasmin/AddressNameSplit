@@ -122,15 +122,15 @@
   "namePartial":
             [
               {
-                "pattern": " *(.*)",
+                "pattern": "( *(.*))",
                 "where": "not regexp '(( [sS][,.]?[uU][,.]?[iI][,.]?[tT][,.]?[eE][,.]?( |$))|( [Uu][,.]?[nN][,.]?[iI][,.]?[tT][,.]?[eE]?[,.]?( |$))|( [pP][,.]?[lL][,.]?[aA]?[,.]?[cC]?[,.]?[eE]?[,.]?( |$))|( [Tt][,.]?[rR][,.]?[lL][,.]?[,.]?( |$))|( [bB][,.]?[lL][,.]?[vV][,.]?[dD][,.]?( |$))|( [pP][,.]?[lL][,.]?[aA][,.]?[zZ][,.]?[aA][,.]?( |$))|( [rR][,.]?[oO0]?[,.]?[Uu]?[,.]?[tT][,.]?[eE]?[,.]?( |$))|( [cC][,.]?[tT][,.]?( |$))|( [pP][,.]?[iI][,.]?[kK][,.]?[eE][,.]?( |$))|( [pP][,.]?[aA]?[,.]?[rR]?[,.]?[kK][,.]?[wW]?[,.]?[aA]?[,.]?[yY]?[,.]?( |$))|( [hH][,.]?[iI]?[,.]?[gG]?[,.]?[hH]?[,.]?[wW][,.]?[aA]?[,.]?[yY][,.]?( |$))|( [Ll][,.]?[aA]?[,.]?[nN][,.]?[eE]?[,.]?( |$))|( [cC][,.]?[iI][,.]?[rR][,.]?[cC]?[,.]?[lL]?[,.]?[eE]?[,.]?( |$))|( [Aa][,.]?[vV][,.]?[eE][,.]?[nN]?[,.]?[uU]?[,.]?[eE]?[,.]?( |$))|( [dD][,.]?[rR][,.]?[iI]?[,.]?[vV]?[,.][eE]?[,.]?( |$))|( [sS][,.]?[tT][.,]?[rR]?[,.]?[eE]?[,.][eE]?[,.]?[,.][tT][,.]( |$))|( [pP] *[.,]? *[oO0] *[,.]? *[bB][,.]? *[oO0][.,]? *[xX][,.]?)|([0-9])|( [sS][tT][rR]?[eE]?[eE]?[tT]?)( |$)|([dD][rR][iI]?[vV]?[eE]?)( |$))'",
-                "group": 1,
+                "group": 2,
                 "_comment": "all other possible name which doesnt have property of address      0"
               },
               {
                 "pattern": "(^( *)((([Cc][oO0][rR]?[pP]?[oO0]?[rR]?[aA@]?[tT]?[i1I]?[oO0]?[nN]?)|([dD][eE][pP][aA]?[rR]?[Tt][mM]?[eE]?[nN]?[Tt]?)|([iI][nN][cC][oO0]?[rR]?[pP]?[oO0]?[rR]?[aA]?[tT]?[eE]?[dD]?))( +|$) *[#]? *[0-9a-zA-Z#]+ *[0-9a-zA-Z#]* *[0-9a-zA-Z#]*)( *$))",
                 "where": "regexp '^ *(([iI][nN][cC])|([dD][Ee][pP])|([cC][oO0][rR]))'",
-                "grouup": 1,
+                "group": 1,
                 "_comment": "start with inc/dep/cor       (remove this when logic was incorrect below code will work)   CORP TAX DEPT 20210      1"
               },
               {
@@ -143,7 +143,7 @@
   "addressPartial":
             [
               {
-                "pattern": "( *[,.]?|^)([0-9].*)",
+                "pattern": "^( *[,.]?)([0-9].*)",
                 "where": "regexp '[0-9]'",
                 "group": 2,
                 "_comment": "all other possible address start with number                       0"

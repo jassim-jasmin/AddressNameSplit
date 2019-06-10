@@ -34,7 +34,6 @@ class Extraction:
                              'where ' + fieldName + " " + pattern[
                                  'where'] + " and " + outFiledName + " is null and " + otherName + " is null ",
                              pattern['pattern'], pattern['group'])
-            #print(outFiledName + " is null and " + otherName + " is null ")
 
     def orderedExtractZillow(self, schemaName, tableName, idColumn, fieldName):
         try:
@@ -45,12 +44,12 @@ class Extraction:
             self.obj.createColumn(tableName, fieldName+'_name_extract')
             self.obj.createColumn(tableName, fieldName + '_no_match')
 
-            self.extract(schemaName, tableName, idColumn, fieldName, fieldName+'_address_extract', 'address')
-            self.extract(schemaName, tableName, idColumn, fieldName, fieldName+'_name_extract', 'name')
-            self.partialExtract(schemaName, tableName, idColumn, fieldName, fieldName+'_name_extract', 'name')
-            self.partialExtract(schemaName, tableName, idColumn, fieldName, fieldName+'_address_extract', 'address')
-            sqlWhere = fieldName+'_name_extract is null and ' + fieldName+'_address_extract is null and ' + fieldName + ' is not null'
-            #self.obj.insertField(tableName, idColumn, fieldName, fieldName + '_no_match', sqlWhere, ' *(.*)', 1)
+            # self.extract(schemaName, tableName, idColumn, fieldName, fieldName+'_address_extract', 'address')
+            # self.extract(schemaName, tableName, idColumn, fieldName, fieldName+'_name_extract', 'name')
+            # self.partialExtract(schemaName, tableName, idColumn, fieldName, fieldName+'_name_extract', 'name')
+            # self.partialExtract(schemaName, tableName, idColumn, fieldName, fieldName+'_address_extract', 'address')
+            sqlWhere = ' where ' + fieldName+'_name_extract is null and ' + fieldName+'_address_extract is null and ' + fieldName + ' is not null'
+            self.obj.insertField(tableName, idColumn, fieldName, fieldName + '_no_match', sqlWhere, ' *(.*)', 1)
         except Exception as e:
             print(e)
 

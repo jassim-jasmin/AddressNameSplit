@@ -71,7 +71,6 @@ class sqlDB:
                             dataIndex = dataIndex+1
                             data[dataIndex] = idAndPatternString
                             idAndPatternString = []
-                            #print(dataIndex,index)
             #print(index)
             return data
         except Exception as e:
@@ -82,8 +81,8 @@ class sqlDB:
             mycursor = self.mydb.cursor()
             data = self.regexData(tableName,idColumnName, searchColumnName, sqlWhere, pyRe, gNo)
             for index,values in data.items():
-                #print("inserting")
                 mycursor.executemany("update " + tableName + " set " + insertColumnName + " = %s where " + idColumnName + " = %s", values)
+            self.mydb.commit()
         except Exception as e:
             print(e)
 
@@ -92,6 +91,7 @@ class sqlDB:
             self.defaultZillow()
             self.connectSchema(schemaName)
             #self.createColumn(tableName, insertColumnName)
+            #print(tableName, idColumnName, searchColumnName, insertColumnName, sqlWhere, pyRe, gNo)
             self.insertField(tableName, idColumnName, searchColumnName, insertColumnName, sqlWhere, pyRe, gNo)
         except Exception as e:
             print(e)
