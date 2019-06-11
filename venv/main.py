@@ -67,24 +67,21 @@ class Extraction:
 
 
 extrac = Extraction()
-schemaName = 'ga_statewide_renewal' #'testj'
-tableName = 'pe_owner'
-idColumnName = 'id'
-fieldName = 'test_ADDRESS1'
+# schemaName = 'ga_statewide_renewal' #'testj'
+# tableName = 'pe_owner'
+# idColumnName = 'id'
+# fieldName = 'test_ADDRESS1'
+
+schemaName = 'fl_flagler_rawdata' #'testj'
+tableName = 'flview1'
+idColumnName = 'id_1'
+fieldName = 'test_ADDRESS_2'
 
 start = time.time()
 extrac.orderedExtractZillow(schemaName, tableName, idColumnName, fieldName)
+fieldName = 'test_ADDRESS_1'
+extrac.orderedExtractZillow(schemaName, tableName, idColumnName, fieldName)
+fieldName = 'test_ADDRESS_3'
+extrac.orderedExtractZillow(schemaName, tableName, idColumnName, fieldName)
 end = time.time()
 print("Complete execution time: ", end-start)
-# obj = Extraction()
-#
-# start = time.time()
-# obj.extract('testj', 'pe_owner', 'id', 'ADDRESS1', 'address_extract', 'address')
-# obj.extract('testj', 'pe_owner', 'id', 'ADDRESS1', 'name_extract', 'name')
-# obj.partialExtract('testj', 'pe_owner', 'id', 'ADDRESS1', 'name_extract', 'name')
-# obj.partialExtract('testj', 'pe_owner', 'id', 'ADDRESS1', 'address_extract', 'address')
-# end = time.time()
-# print("Complete execution time: ", end-start)
-
-# Extraction.partialExtract(Extraction,'testj', 'pe_owner', 'id', 'ADDRESS1', 'address_extract', 'address')
-# Extraction.partialExtract(Extraction, 'testj', 'pe_owner', 'id', 'ADDRESS1', 'name_extract', 'name')
