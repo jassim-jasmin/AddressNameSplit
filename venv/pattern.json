@@ -147,7 +147,7 @@
               },
               {
                 "pattern": "^ *(( *(([nN][oO0][rR][tT][hH])|([sS][oO0][uU][tT][hH])|([wW][eE][sS][tT])|([eE][sS][tT])|([newsNEWS])|([Nn]([EWS]|[ews]) +)|([Ee]([NWS]|[nws]) +)|([Ww]([NES]|[nes]) +)|([Ss]([NEW]|[new])) +)) *[0-9]+ +.* (([nN][oO0][rR][tT][hH])|([sS][oO0][uU][tT][hH])|([wW][eE][sS][tT])|([eE][sS][tT])|([newsNEWS])|([Nn]([EWS]|[ews]) +)|([Ee]([NWS]|[nws]) +)|([Ww]([NES]|[nes]))))$",
-                "where": "regexp ' *^[nNeEwWsS]",
+                "where": "regexp ' *^[nNeEwWsS]'",
                 "group": 1,
                 "_comment": "news 123 test news"
               }

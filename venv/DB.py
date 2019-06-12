@@ -101,6 +101,36 @@ class sqlDB:
         except Exception as e:
             print("zillowUpdate",e)
 
+    def getId(self, tableName, idFieldName, firstField, secondField):
+        try:
+            sql = "select " + idFieldName + " from " + tableName + " where " + firstField + "_address_extract is null"
+        except Exception as e:
+            print(e)
+
+    def getConcatId(self, tableName, idFieldName, firstField, secondField, idList):
+        try:
+            sql = "select " + idFieldName + ", " + firstField + ", " + secondField + " from " + tableName + " where " + idFieldName + " = " + idList
+            cursor = self.mydb.cursor()
+
+            idAndData = []
+            cursor.execute(sql)
+            for id, firstData, secondData in cursor:
+                idAndData.append((id, firstData.lstrip() + ' ' + secondData.rstrip()))
+            return idAndData
+        except Exception as e:
+            print(e)
+
+    def replaceRow(self, tableName, idField, firstFieldName, secondField, idDataList):
+        try:
+            for values in idDataList:
+                cursor = self.mydb.cursor()
+                cursor.executemany(
+                    "update " + tableName + " set " + firstFieldName + " = %s where " + idField + " = %s", values)
+                cursor.executemany("update " + tableName + " set " + secondField + " = null where " + idField + " = %s",
+                                   values[0])
+        except Exception as e:
+            print(e)
+
 # obj = sqlDB()
 #
 # start = time.time()

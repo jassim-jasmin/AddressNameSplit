@@ -67,23 +67,23 @@ class Extraction:
 
 
 extrac = Extraction()
-# schemaName = 'ga_statewide_renewal' #'testj'
-# tableName = 'pe_owner'
-# idColumnName = 'id'
-# fieldName = 'test_ADDRESS1'
+schemaName = 'ga_statewide_renewal' #'testj'
+tableName = 'pe_owner'
+idColumnName = 'id'
+fieldName = 'test_ADDRESS1'
 
 #schemaName = 'fl_flagler_rawdata' #'testj'
-schemaName = 'testj'
-tableName = 'testExtraction'
-idColumnName = 'id'
-fieldName = 'ADDRESS_2'
+# schemaName = 'testj'
+# tableName = 'testExtraction'
+# idColumnName = 'id'
+# fieldName = 'ADDRESS_2'
 
 print(schemaName, tableName)
 start = time.time()
 extrac.orderedExtractZillow(schemaName, tableName, idColumnName, fieldName)
-fieldName = 'ADDRESS_1'
-extrac.orderedExtractZillow(schemaName, tableName, idColumnName, fieldName)
-fieldName = 'ADDRESS_3'
-extrac.orderedExtractZillow(schemaName, tableName, idColumnName, fieldName)
+# fieldName = 'ADDRESS_1'
+# extrac.orderedExtractZillow(schemaName, tableName, idColumnName, fieldName)
+# fieldName = 'ADDRESS_3'
+# extrac.orderedExtractZillow(schemaName, tableName, idColumnName, fieldName)
 end = time.time()
 print("Complete execution time: ", end-start)
