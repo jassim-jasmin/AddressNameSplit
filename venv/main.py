@@ -14,7 +14,7 @@ class Extraction:
         jsonIndex = -1
         for pattern in name:
             jsonIndex = jsonIndex + 1
-            print("json index: ", jsonIndex)
+            print("json ", nameOrAddress, jsonIndex)
             # print(pattern)
             self.obj.zillowUpdate(schemaName, tableName, idColumn, fieldName, outFiledName,
                              'where ' + fieldName + " " + pattern['where'] + " and " + outFiledName + " is null",
@@ -33,7 +33,7 @@ class Extraction:
             jsonIndex = -1
             for pattern in name:
                 jsonIndex = jsonIndex + 1
-                print("json index: ", jsonIndex)
+                print("json ", nameOrAddress, jsonIndex)
                 self.obj.zillowUpdate(schemaName, tableName, idColumn, fieldName, outFiledName,
                                  'where ' + fieldName + " " + pattern[
                                      'where'] + " and " + outFiledName + " is null and " + otherName + " is null ",
@@ -72,16 +72,18 @@ extrac = Extraction()
 # idColumnName = 'id'
 # fieldName = 'test_ADDRESS1'
 
-schemaName = 'fl_flagler_rawdata' #'testj'
-tableName = 'flview1'
-idColumnName = 'id_1'
-fieldName = 'test_ADDRESS_2'
+#schemaName = 'fl_flagler_rawdata' #'testj'
+schemaName = 'testj'
+tableName = 'testExtraction'
+idColumnName = 'id'
+fieldName = 'ADDRESS_2'
 
+print(schemaName, tableName)
 start = time.time()
 extrac.orderedExtractZillow(schemaName, tableName, idColumnName, fieldName)
-fieldName = 'test_ADDRESS_1'
+fieldName = 'ADDRESS_1'
 extrac.orderedExtractZillow(schemaName, tableName, idColumnName, fieldName)
-fieldName = 'test_ADDRESS_3'
+fieldName = 'ADDRESS_3'
 extrac.orderedExtractZillow(schemaName, tableName, idColumnName, fieldName)
 end = time.time()
 print("Complete execution time: ", end-start)

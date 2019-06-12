@@ -101,11 +101,6 @@ class sqlDB:
         except Exception as e:
             print("zillowUpdate",e)
 
-        finally:
-            print("DB commit")
-            self.mydb.commit()
-
-
 # obj = sqlDB()
 #
 # start = time.time()
