@@ -43,11 +43,9 @@ class Extraction:
 
     def orderedExtractZillow(self, schemaName, tableName, idColumn, fieldName):
         try:
-            print('begin')
             self.obj.defaultZillow()
             schemaStatus = self.obj.connectSchema(schemaName)
 
-            print('status: ', schemaStatus)
             if schemaStatus == 1:
                 tableStatus = self.obj.checkTable(tableName)
                 if tableStatus == 1:
@@ -76,13 +74,8 @@ class Extraction:
                 else:
                     return tableStatus
             else:
+                self.obj.mydb.close()
                 return schemaStatus
         except Exception as e:
             print('exception', e)
             return e
-        #
-        # finally:
-        #     if self.obj.mydb:
-        #         self.obj.mydb.close()
-
-
