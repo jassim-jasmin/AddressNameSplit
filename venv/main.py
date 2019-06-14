@@ -1,70 +1,88 @@
 import DB
+import json
 import time
 
 from DB import sqlDB
 
-obj = sqlDB()
+class Extraction:
+    jsonPatternFile = open('pattern.json', 'r')
+    jsonData = json.loads(jsonPatternFile.read())
+    obj = sqlDB()
 
-# #absolute name select
-# sqlCondition = """CurDeliveryAddr not regexp '( +WAY($| +))|( +PKWY($| +)|( +STE +)|( +ST($| +))|(STREET($| +))|( +RD($| +))|( +ROAD($| +))|( +SUITE($| +))|((^UNIT +)|( +UNITE?($| +)))|( *PLACE($| +))|( +PL($| +))|( +TRL($| +))|( +BLVD($| +))|( +PLAZA($| +))|( +PL($| +))|( +RT($| +))|( +ROUTE($| +))|( +CT($| +))|( +PIKE($| +))|( +PKY($| +))|( +PK +)|( +PARKWAY +)|( +HWY($| +))|( +HIGHWAY($| +))|( +LN($| +))|( +LANE($| +))|( +CIRCLE($| +))|( +CIR($| +))|( +AVE($| +))|( +AVENUE($| +))|( +DR($| +))|( +DRIVE($| +)))'
-# and CurDeliveryAddr not regexp '([0-9]+ +((([Nn]([EWS]|[ews]) +)|([Ee]([NWS]|[nws]) +)|([Ww]([NES]|[nes]) +)|([Ss]([NEW]|[new])))|([NEWS]|[news])) +)'
-# and CurDeliveryAddr not regexp '([0-9]+ *)?([Pp][.]? *[Oo][.]? *)[Bb][.]?[Oo][.]?[Xx][.]?'
-# and CurDeliveryAddr not regexp '(([0-9]+ +)?([bB][oO][xX]) +([0-9]+))'"""
-#
-# start = time.time()
-# obj.zillowUpdate('testj', 'main_source_file', 'id', 'CurDeliveryAddr','new12', 'where ' + sqlCondition, '(.*)', 1)
-# end = time.time()
-# print("execution time ",end-start)
-#
-# sqlCondition = """CurDeliveryAddr regexp '( +WAY($| +))|( +PKWY($| +)|( +STE +)|( +ST($| +))|(STREET($| +))|( +RD($| +))|( +ROAD($| +))|( +SUITE($| +))|((^UNIT +)|( +UNITE?($| +)))|( *PLACE($| +))|( +PL($| +))|( +TRL($| +))|( +BLVD($| +))|( +PLAZA($| +))|( +PL($| +))|( +RT($| +))|( +ROUTE($| +))|( +CT($| +))|( +PIKE($| +))|( +PKY($| +))|( +PK +)|( +PARKWAY +)|( +HWY($| +))|( +HIGHWAY($| +))|( +LN($| +))|( +LANE($| +))|( +CIRCLE($| +))|( +CIR($| +))|( +AVE($| +))|( +AVENUE($| +))|( +DR($| +))|( +DRIVE($| +)))'
-# or CurDeliveryAddr regexp '([0-9]+ +((([Nn]([EWS]|[ews]) +)|([Ee]([NWS]|[nws]) +)|([Ww]([NES]|[nes]) +)|([Ss]([NEW]|[new])))|([NEWS]|[news])) +)'
-# or CurDeliveryAddr regexp '([0-9]+ *)?([Pp][.]? *[Oo][.]? *)[Bb][.]?[Oo][.]?[Xx][.]?'
-# or CurDeliveryAddr regexp '(([0-9]+ +)?([bB][oO][xX]) +([0-9]+))'"""
-#
-# start = time.time()
-# obj.zillowUpdate('testj', 'main_source_file', 'id', 'CurDeliveryAddr','address_extract', 'where ' + sqlCondition, '(.*)', 1)
-# end = time.time()
-# print("execution time ",end-start)
+    def extract(self, schemaName, tableName, idColumn, fieldName, outFiledName, nameOrAddress):
+        name = self.jsonData[nameOrAddress]
+        jsonIndex = -1
+        for pattern in name:
+            jsonIndex = jsonIndex + 1
+            print("json ", nameOrAddress, jsonIndex)
+            # print(pattern)
+            self.obj.zillowUpdate(schemaName, tableName, idColumn, fieldName, outFiledName,
+                             'where ' + fieldName + " " + pattern['where'] + " and " + outFiledName + " is null",
+                             pattern['pattern'], pattern['group'])
 
-################################################
-sqlCondition = """ADDRESS1 like '% box %'
-and address_extract is null"""
-#num po box
-regexp = '((([0-9]+ *)?([Pp] *[.,]? *[Oo0] *[,.]? *)[Bb] *[,.]?[Oo] *[.,]?[Xx] *[,.]?).*)'
+    def partialExtract(self, schemaName, tableName, idColumn, fieldName, outFiledName, nameOrAddress):
+        try:
+            self.obj.defaultZillow()
+            self.obj.connectSchema(schemaName)
+            name = self.jsonData[nameOrAddress + 'Partial']
+            if nameOrAddress == 'name':
+                otherName = fieldName+'_address_extract'
+            elif nameOrAddress == 'address':
+                otherName = fieldName+'_name_extract'
 
-start = time.time()
-obj.zillowUpdate('testj', 'pe_owner', 'id', 'ADDRESS1','address_extract', 'where ' + sqlCondition, regexp, 1)
-end = time.time()
+            jsonIndex = -1
+            for pattern in name:
+                jsonIndex = jsonIndex + 1
+                print("json ", nameOrAddress, jsonIndex)
+                self.obj.zillowUpdate(schemaName, tableName, idColumn, fieldName, outFiledName,
+                                 'where ' + fieldName + " " + pattern[
+                                     'where'] + " and " + outFiledName + " is null and " + otherName + " is null ",
+                                 pattern['pattern'], pattern['group'])
+        except Exception as e:
+            prin("partialExtract",e)
 
-#num po .* road/rd No need of it
-print("Execution time: ", end-start)
+    def orderedExtractZillow(self, schemaName, tableName, idColumn, fieldName):
+        try:
+            print('begin')
+            self.obj.defaultZillow()
+            schemaStatus = self.obj.connectSchema(schemaName)
 
-######################################
-#num po box
-#regexp = '((([0-9]+ *)?(([pP][oO][sS][tT] *[oO][fF][fF][iI][cC][eE])|([Pp] *[,.]? *[Oo0] *[,.]? *)).*(([Rr][dD])|([rR][oO0][aA][dD]))))( *$)'
-regexp = '((([0-9]+ *)?(([pP][oO][sS][tT] *[oO][fF][fF][iI][cC][eE])|([Pp][.]? *[Oo][.]? *))[Bb][.]?[Oo0][.]?[Xx][.]?).*)'
+            print('status: ', schemaStatus)
+            if schemaStatus == 1:
+                tableStatus = self.obj.checkTable(tableName)
+                if tableStatus == 1:
+                    idFildCheck = self.obj.checkC(tableName, idColumn)
+                    if idFildCheck == 1:
+                        FildCheck = self.obj.checkC(tableName, fieldName)
+                        if FildCheck == 1:
+                            self.obj.createColumn(tableName, fieldName+'_address_extract')
+                            self.obj.createColumn(tableName, fieldName+'_name_extract')
+                            self.obj.createColumn(tableName, fieldName + '_no_match')
 
-start = time.time()
-obj.zillowUpdate('testj', 'pe_owner', 'id', 'ADDRESS1','address_extract', 'where ' + sqlCondition, regexp, 1)
-end = time.time()
-print("Execution time: ", end-start)
-#num box .* road/rd
-print("Execution time: ", end-start)
-#####################################
-#regexp = '((([0-9]+ *)?([bB] *[.,]? *[Oo0] *[.,]? *[xX]).*(([Rr][dD])|([rR][oO0][aA][dD]))))( *$)'
-regexp = '((([rR][oO]?[uU]?[tT][eE]?) *([0-9]+ *)?([bB] *[.,]? *[Oo0] *[.,]? *[xX]).*(([Rr][dD])|([rR][oO0][aA][dD]))))( *$)'
-start = time.time()
-obj.zillowUpdate('testj', 'pe_owner', 'id', 'ADDRESS1','address_extract', 'where ' + sqlCondition, regexp, 1)
-end = time.time()
-print("Execution time: ", end-start)
-#####################################
+                            self.extract(schemaName, tableName, idColumn, fieldName, fieldName+'_address_extract', 'address')
+                            self.extract(schemaName, tableName, idColumn, fieldName, fieldName+'_name_extract', 'name')
+                            self.partialExtract(schemaName, tableName, idColumn, fieldName, fieldName+'_name_extract', 'name')
+                            self.partialExtract(schemaName, tableName, idColumn, fieldName, fieldName+'_address_extract', 'address')
 
-# Name extract
+                            sqlWhere = ' where ' + fieldName+'_name_extract is null and ' + fieldName+'_address_extract is null and ' + fieldName + ' is not null'
 
-regexp = '(.*) +((([0-9]+ *)((([rR][oO]?[uU]?[tT][eE]?) *([0-9]+ *)?([bB] *[.,]? *[Oo0] *[.,]? *[xX]).*(([Rr][dD])|([rR][oO0][aA][dD]))))( *$)))'
-sqlCondition = """ADDRESS1 like '% box %'
-and name_extract is null"""
-start = time.time()
-obj.zillowUpdate('testj', 'pe_owner', 'id', 'ADDRESS1','name_extract', 'where ' + sqlCondition, regexp, 1)
-end = time.time()
-print("Execution time: ", end-start)
+                            self.obj.connectSchema(schemaName)
+                            self.obj.insertField(tableName, idColumn, fieldName, fieldName + '_no_match', sqlWhere, ' *(.*)', 1)
+                            return 1
+                        else:
+                            return FildCheck
+                    else:
+                        return idFildCheck
+                else:
+                    return tableStatus
+            else:
+                return schemaStatus
+        except Exception as e:
+            print('exception', e)
+            return e
+        #
+        # finally:
+        #     if self.obj.mydb:
+        #         self.obj.mydb.close()
+
+

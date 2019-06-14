@@ -1,0 +1,95 @@
+{
+  "address":
+            [
+              {
+                "pattern": "^[a-zA-Z.]+ *[bB][oO0][xX] *[0-9]+( *$)"
+              },
+              {
+                "pattern": "((([0-9]+ *)?(([pP][oO0][sS][tT] *[oO0][fF][fF][iI][cC][eE])|([Pp] *[.,]*[\\[]? *[0OoBbpP]? *[,.]* *)) *[Bb] *[,.]*[Oo] *[.,]*[Xx] *[,.]*).*)",
+                "where": "like '%box%'",
+                "group": 1,
+                "_comment": "123 post office/p\\ob box test                 0"
+              },
+              {
+                "pattern": "((([0-9]+ *)?(([pP][oO0][sS][tT] *[oO0][fF][fF][iI][cC][eE])|([Pp][.,]* *([0Oo]|[bB])[.,]* *))[Bb][.,]*[Oo0][.,]*[Xx][.,]*).*)",
+                "where": "like '%box%'",
+                "group": 1,
+                "_comment": "123/post office/po/b box test                  1"
+              },
+              {
+                "pattern": "((([rR][oO0]?[uU]?[tT][eE]?) *([0-9]+ *)?([bB] *[.,]* *[Oo0] *[.,]* *[xX]).*(([Rr][dD])|([rR][oO0][aA][dD]))))( *$)",
+                "where": "like '%box%'",
+                "group": 1,
+                "_comment": "rt/route 123 box test rd/road                  2"
+              },
+              {
+                "pattern": "(([Rr][0Oo]?[UU]?[Tt][eE]?)[.,]* *[0-9]* *([bB][oO0][xX]).*)",
+                "where": "like '%box%'",
+                "group": 1,
+                "_comment": "rt 123 box test                                3"
+              },
+              {
+                "pattern": "((^|^[pP] *|^[bB] *|^[oO0] *)([bB][oO0][xX]) *[0-9]+$)",
+                "where": "like '%box%'",
+                "group": 1,
+                "_comment": "pb/o box 123                                   4"
+              },
+              {
+                "pattern": "(^([bB][oO0][xX]) *[0-9]+ *.*([Rr][oO]?[aA]?[dD])$)",
+                "where": "like '%box%'",
+                "group": 1,
+                "_comment": "box 123 test rd/road                           5"
+              },
+              {
+                "pattern": "(^[0-9]+ *[a-zA-Z]* *[Bb][oO0][xX] .*([Rr][oO0]?[aA]?[dD])$)",
+                "where": "like '%box%'",
+                "group": 1,
+                "_comment": "123 test box test rd/road                      6"
+              },
+              {
+                "pattern": "(^([bB][oO0][xX]) *[0-9]+.* (([sS][tT])|([dD][rR])|([rR][oO0]?[aA]?[dD]?))[.]?$)",
+                "where": "like '%box%'",
+                "group": 1,
+                "_comment": "box 123 xxx st/dr/rd/                           7"
+              },
+              {
+                "pattern": "(((^[0-9]+ *[a-zA-z]+)|(^[a-zA-z]+)) +(([sS][tT][rR]?[eE]?[eE]?[tT]?)|([dD][rR][iI]?[vV]?[eE]?))$)",
+                "where": "regexp '(([sS][tT][rR]?[eE]?[eE]?[tT]?)|([lL][aA]?[nN][eE]?)|([dD][rR][iI]?[vV]?[eE]?))$'",
+                "group": 1,
+                "_comment": "123 abc st/ln/dr / abc st/ln/dr                 8"
+              },
+              {
+                "pattern": "((^[0-9]+ *[a-zA-z]+) +(([lL][aA]?[nN][eE]?))$)",
+                "where": "regexp '((^[0-9]+ *[a-zA-z]+) +(([lL][aA]?[nN][eE]?))$)'",
+                "group": 1,
+                "_comment": "123 test ln/lane"
+              },
+              {
+                "pattern": "(^[a-zA-Z]+ *[0-9]+ *[bB][oO0][xX] *[0-9]+.*)",
+                "where": "like '%box%'",
+                "group": 1,
+                "_comment": "test 11 box 123                                9"
+              },
+              {
+                "pattern": "([0-9]+ +[bB][oO0][xX] +.*(([Nn][oO0][rR][tT][hH])|([eE][aA][sS][tT])|([wW][eE][sS][tT])|([sS][oO][uU][tT][hH])|(([Nn]([EWS]|[ews]) +)|([Ee]([NWS]|[nws]) +)|([Ww]([NES]|[nes]) +)|([Ss]([NEW]|[new])))|([NEWS]|[news]))$)",
+                "where": "like '%box%'",
+                "group": 1,
+                "_comment": "123 box test NEWS                              10"
+              }
+            ],
+  "name":
+  [
+    {
+      "pattern": " *(.*[lL][lL][cC]($| *$))",
+      "where": "like '%llc%'",
+      "group": 1,
+      "_comment": "end with llc                                             0"
+    },
+    {
+      "pattern": " *(.*[iI][nN][cC]($| *$))",
+      "where": "like '%inc%'",
+      "group": 1,
+      "_comment": "end with inc                                             1"
+    }
+  ]
+}
