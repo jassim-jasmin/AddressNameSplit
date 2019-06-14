@@ -1,4 +1,6 @@
 from DB import sqlDB
+from main import Extraction
+import time
 
 def con():
     sqlCondition = "regexp '[cC][\/][oO0]'"
@@ -13,15 +15,15 @@ def con():
 def extraction():
     extrac = Extraction()
 
-    schemaName = 'testj'
-    tableName = 'testExtraction'
-    idColumnName = 'id'
-    fieldName = 'test2'
-
-    # schemaName = 'ga_statewide_renewal' #'testj'
-    # tableName = 'pe_owner'
+    # schemaName = 'testj'
+    # tableName = 'testExtraction'
     # idColumnName = 'id'
-    # fieldName = 'test_ADDRESS1'
+    # fieldName = 'test2'
+
+    schemaName = 'ga_statewide_renewal' #'testj'
+    tableName = 'pe_owner'
+    idColumnName = 'id'
+    fieldName = 'test_ADDRESS1'
 
     # schemaName = 'fl_flagler_rawdata' #'testj'
     # schemaName = 'testj'
@@ -32,9 +34,8 @@ def extraction():
     print(schemaName, tableName)
     start = time.time()
     extrac.orderedExtractZillow(schemaName, tableName, idColumnName, fieldName)
-    # fieldName = 'ADDRESS_1'
-    # extrac.orderedExtractZillow(schemaName, tableName, idColumnName, fieldName)
-    # fieldName = 'ADDRESS_3'
-    # extrac.orderedExtractZillow(schemaName, tableName, idColumnName, fieldName)
     end = time.time()
     print("Complete execution time: ", end - start)
+
+print("start")
+extraction()

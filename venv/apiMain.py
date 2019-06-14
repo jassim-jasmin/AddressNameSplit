@@ -1,6 +1,8 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from main import Extraction
 from flask_cors import CORS, cross_origin
+
+split = Extraction()
 
 app = Flask(__name__)
 
@@ -13,26 +15,21 @@ cors = CORS(app, resources={r"/": {"origins": "*"}})
 def extract():
     try:
         content = request.get_json()
-        # print(content)
-        # print(request.is_json)
-        # print(request)
-        #print(content['hostAddress'])
-        #print(content['userName'])
-        #print(content['passWord'])
 
         print(content['schemaName'])
         print(content['tableName'])
         print(content['idColumn'])
         print(content['fieldName'])
-        #print(content['outFiledName'])
 
-        data = {"local": "f:j"}
-        orderedExtractZillow()
-        Extraction.orderedExtractZillow(Extraction, content['schemaName'], content['tableName'], content['idColumn'], content['fieldName'])
-        return "success"
+        status = split.orderedExtractZillow(content['schemaName'], content['tableName'], content['idColumn'], content['fieldName'])
+        if status == 1:
+            return jsonify({"success":"Split completed"})
+        else:
+            print("string: ",str(status))
+            return jsonify({"error": str(status)})
     except Exception as e:
         print(e)
-        return "failed"
+        return jsonify({"error":'erroroccured'})
 
 if __name__ =='__main__':
     app.run(debug=True, host='192.168.15.63', port='3226')

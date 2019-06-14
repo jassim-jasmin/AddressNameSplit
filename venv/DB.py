@@ -23,9 +23,32 @@ class sqlDB:
     def connectSchema(self,sqlSchema):
         try:
             self.mydb = mysql.connector.connect(host=self.sqlHost, user=self.sqlUserName, password=self.sqlPassword, database=sqlSchema)
+            return 1
             #print(self.mydb)
         except Exception as e:
             print("Connection problem in schema",e)
+            return e
+
+    def checkTable(self, tableName):
+        try:
+            sql = 'select * from ' + tableName
+            mycursor = self.mydb.cursor(buffered=True)
+            mycursor.execute(sql)
+            return 1
+        except Exception as e:
+            return e
+
+    def checkC(self,tableName, id):
+        try:
+            sql = 'select ' + id + ' from ' + tableName
+            print(sql)
+            mycursor = self.mydb.cursor(buffered=True)
+            mycursor.execute(sql)
+            return 1
+        except Exception as e:
+            print(e)
+            status = id + ' is not a column name'
+            return status
 
     def createColumn(self, tableName, columnName):
         try:
@@ -91,7 +114,6 @@ class sqlDB:
             data = self.regexData(tableName,idColumnName, searchColumnName, sqlWhere, pyRe, gNo)
             for index,values in data.items():
                 mycursor.executemany("update " + tableName + " set " + insertColumnName + " = %s where " + idColumnName + " = %s", values)
-
         except Exception as e:
             print("insertField",e)
 

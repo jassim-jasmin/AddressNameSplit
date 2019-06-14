@@ -43,26 +43,46 @@ class Extraction:
 
     def orderedExtractZillow(self, schemaName, tableName, idColumn, fieldName):
         try:
+            print('begin')
             self.obj.defaultZillow()
-            self.obj.connectSchema(schemaName)
+            schemaStatus = self.obj.connectSchema(schemaName)
 
-            self.obj.createColumn(tableName, fieldName+'_address_extract')
-            self.obj.createColumn(tableName, fieldName+'_name_extract')
-            self.obj.createColumn(tableName, fieldName + '_no_match')
+            print('status: ', schemaStatus)
+            if schemaStatus == 1:
+                tableStatus = self.obj.checkTable(tableName)
+                if tableStatus == 1:
+                    idFildCheck = self.obj.checkC(tableName, idColumn)
+                    if idFildCheck == 1:
+                        FildCheck = self.obj.checkC(tableName, fieldName)
+                        if FildCheck == 1:
+                            self.obj.createColumn(tableName, fieldName+'_address_extract')
+                            self.obj.createColumn(tableName, fieldName+'_name_extract')
+                            self.obj.createColumn(tableName, fieldName + '_no_match')
 
-            self.extract(schemaName, tableName, idColumn, fieldName, fieldName+'_address_extract', 'address')
-            self.extract(schemaName, tableName, idColumn, fieldName, fieldName+'_name_extract', 'name')
-            self.partialExtract(schemaName, tableName, idColumn, fieldName, fieldName+'_name_extract', 'name')
-            self.partialExtract(schemaName, tableName, idColumn, fieldName, fieldName+'_address_extract', 'address')
+                            self.extract(schemaName, tableName, idColumn, fieldName, fieldName+'_address_extract', 'address')
+                            self.extract(schemaName, tableName, idColumn, fieldName, fieldName+'_name_extract', 'name')
+                            self.partialExtract(schemaName, tableName, idColumn, fieldName, fieldName+'_name_extract', 'name')
+                            self.partialExtract(schemaName, tableName, idColumn, fieldName, fieldName+'_address_extract', 'address')
 
-            sqlWhere = ' where ' + fieldName+'_name_extract is null and ' + fieldName+'_address_extract is null and ' + fieldName + ' is not null'
+                            sqlWhere = ' where ' + fieldName+'_name_extract is null and ' + fieldName+'_address_extract is null and ' + fieldName + ' is not null'
 
-            self.obj.connectSchema(schemaName)
-            self.obj.insertField(tableName, idColumn, fieldName, fieldName + '_no_match', sqlWhere, ' *(.*)', 1)
+                            self.obj.connectSchema(schemaName)
+                            self.obj.insertField(tableName, idColumn, fieldName, fieldName + '_no_match', sqlWhere, ' *(.*)', 1)
+                            return 1
+                        else:
+                            return FildCheck
+                    else:
+                        return idFildCheck
+                else:
+                    return tableStatus
+            else:
+                return schemaStatus
         except Exception as e:
-            print(e)
-
-        finally:
-            self.obj.mydb.close()
+            print('exception', e)
+            return e
+        #
+        # finally:
+        #     if self.obj.mydb:
+        #         self.obj.mydb.close()
 
 
