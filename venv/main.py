@@ -49,9 +49,9 @@ class Extraction:
             if schemaStatus == 1:
                 tableStatus = self.obj.checkTable(tableName)
                 if tableStatus == 1:
-                    idFildCheck = self.obj.checkC(tableName, idColumn)
+                    idFildCheck = self.obj.checkColumn(tableName, idColumn)
                     if idFildCheck == 1:
-                        FildCheck = self.obj.checkC(tableName, fieldName)
+                        FildCheck = self.obj.checkColumn(tableName, fieldName)
                         if FildCheck == 1:
                             self.obj.createColumn(tableName, fieldName+'_address_extract')
                             self.obj.createColumn(tableName, fieldName+'_name_extract')
@@ -73,8 +73,8 @@ class Extraction:
                         return idFildCheck
                 else:
                     return tableStatus
-            else:
                 self.obj.mydb.close()
+            else:
                 return schemaStatus
         except Exception as e:
             print('exception', e)

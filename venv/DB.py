@@ -27,7 +27,8 @@ class sqlDB:
             #print(self.mydb)
         except Exception as e:
             print("Connection problem in schema",e)
-            return e
+            staus = sqlSchema + ' is not a Schema name'
+            return staus
 
     def checkTable(self, tableName):
         try:
@@ -36,9 +37,11 @@ class sqlDB:
             mycursor.execute(sql)
             return 1
         except Exception as e:
-            return e
+            print(e)
+            staus = tableName + ' is not a Table name'
+            return staus
 
-    def checkC(self,tableName, id):
+    def checkColumn(self,tableName, id):
         try:
             sql = 'select ' + id + ' from ' + tableName
             print(sql)
@@ -47,7 +50,7 @@ class sqlDB:
             return 1
         except Exception as e:
             print(e)
-            status = id + ' is not a column name'
+            status = id + ' is not a Column name'
             return status
 
     def createColumn(self, tableName, columnName):
