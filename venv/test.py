@@ -1,54 +1,40 @@
-from flask import Flask, make_response, request, current_app
-from datetime import timedelta
-from functools import update_wrapper
+from DB import sqlDB
 
-app = Flask(__name__)
+def con():
+    sqlCondition = "regexp '[cC][\/][oO0]'"
+    obj = sqlDB()
+    obj.defaultZillow()
+    obj.connectSchema('testj')
+    i = obj.getId('testExtraction', 'id', 'test1', 'test2', sqlCondition)
+    j = obj.getConcatId('testExtraction', 'id', 'test1', 'test2', i)
+    obj.createColumn('testExtraction', 'test1' + '_co_name')
+    obj.insertData('testExtraction', 'id', 'test1' + '_co_name', j)
 
-def crossdomain(origin=None, methods=None, headers=None,
-                max_age=21600, attach_to_all=True,
-                automatic_options=True):
-    if methods is not None:
-        methods = ', '.join(sorted(x.upper() for x in methods))
-    if headers is not None and not isinstance((headers), ('null')):
-        headers = ', '.join(x.upper() for x in headers)
-    if not isinstance((origin),('null')):
-        origin = ', '.join(origin)
-    if isinstance(max_age, timedelta):
-        max_age = max_age.total_seconds()
+def extraction():
+    extrac = Extraction()
 
-    def get_methods():
-        if methods is not None:
-            return methods
+    schemaName = 'testj'
+    tableName = 'testExtraction'
+    idColumnName = 'id'
+    fieldName = 'test2'
 
-        options_resp = current_app.make_default_options_response()
-        return options_resp.headers['allow']
+    # schemaName = 'ga_statewide_renewal' #'testj'
+    # tableName = 'pe_owner'
+    # idColumnName = 'id'
+    # fieldName = 'test_ADDRESS1'
 
-    def decorator(f):
-        def wrapped_function(*args, **kwargs):
-            if automatic_options and request.method == 'OPTIONS':
-                resp = current_app.make_default_options_response()
-            else:
-                resp = make_response(f(*args, **kwargs))
-            if not attach_to_all and request.method != 'OPTIONS':
-                return resp
+    # schemaName = 'fl_flagler_rawdata' #'testj'
+    # schemaName = 'testj'
+    # tableName = 'testExtraction'
+    # idColumnName = 'id'
+    # fieldName = 'ADDRESS_2'
 
-            h = resp.headers
-
-            h['Access-Control-Allow-Origin'] = origin
-            h['Access-Control-Allow-Methods'] = get_methods()
-            h['Access-Control-Max-Age'] = str(max_age)
-            if headers is not None:
-                h['Access-Control-Allow-Headers'] = headers
-            return resp
-
-        f.provide_automatic_options = False
-        return update_wrapper(wrapped_function, f)
-    return decorator
-
-@app.route('/', methods=['GET','POST','OPTIONS'])
-@crossdomain(origin="*")
-def foo():
-    return request.json['inputVar']
-
-if __name__ == '__main__':
-    app.run(debug=True, host='192.168.15.63', port='3226')
+    print(schemaName, tableName)
+    start = time.time()
+    extrac.orderedExtractZillow(schemaName, tableName, idColumnName, fieldName)
+    # fieldName = 'ADDRESS_1'
+    # extrac.orderedExtractZillow(schemaName, tableName, idColumnName, fieldName)
+    # fieldName = 'ADDRESS_3'
+    # extrac.orderedExtractZillow(schemaName, tableName, idColumnName, fieldName)
+    end = time.time()
+    print("Complete execution time: ", end - start)

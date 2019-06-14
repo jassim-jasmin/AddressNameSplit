@@ -76,6 +76,15 @@ class sqlDB:
         except Exception as e:
             print("regexData",e)
 
+    def insertData(self,tableName, idColumnName, fieldName, dataList):
+        try:
+            mycursor = self.mydb.cursor()
+            mycursor.executemany("update " + tableName + " set " + fieldName  + " = %s where " + idColumnName + " = %s", dataList)
+        except Exception as e:
+            print(e)
+        finally:
+            self.mydb.commit()
+
     def insertField(self, tableName, idColumnName, searchColumnName, insertColumnName, sqlWhere, pyRe, gNo):
         try:
             mycursor = self.mydb.cursor()
@@ -101,21 +110,34 @@ class sqlDB:
         except Exception as e:
             print("zillowUpdate",e)
 
-    def getId(self, tableName, idFieldName, firstField, secondField):
+    def getId(self, tableName, idFieldName, firstField, secondField, sqlCondition):
         try:
-            sql = "select " + idFieldName + " from " + tableName + " where " + firstField + "_address_extract is null"
+            sql = "select " + idFieldName + " from " + tableName + " where " + firstField + " " + sqlCondition + " and " + secondField + "_address_extract is null and " + secondField +"_name_extract is not null and " + firstField + "_name_extract is not null"
+            cursor = self.mydb.cursor()
+            cursor.execute(sql)
+
+            idList = []
+            for id in cursor.fetchall():
+                idList.append(str(id[0]))
+            return idList
+
         except Exception as e:
             print(e)
 
     def getConcatId(self, tableName, idFieldName, firstField, secondField, idList):
         try:
-            sql = "select " + idFieldName + ", " + firstField + ", " + secondField + " from " + tableName + " where " + idFieldName + " = " + idList
-            cursor = self.mydb.cursor()
-
             idAndData = []
-            cursor.execute(sql)
-            for id, firstData, secondData in cursor:
-                idAndData.append((id, firstData.lstrip() + ' ' + secondData.rstrip()))
+            for insertId in idList:
+                sql = "select " + idFieldName + ", " + firstField + ", " + secondField + "_name_extract " + " from " + tableName + " where " + idFieldName + " = '" + insertId + "'"
+                cursor = self.mydb.cursor()
+
+                cursor.execute(sql)
+                for id, firstData, secondData in cursor.fetchall():
+                    coPattern = re.search(r'([cC][\/][oO0] .*)',firstData)
+                    if coPattern:
+                        co = coPattern.group(1)
+                        print(co)
+                        idAndData.append((co.lstrip() + ' ' + secondData.rstrip(), id))
             return idAndData
         except Exception as e:
             print(e)
@@ -131,7 +153,10 @@ class sqlDB:
         except Exception as e:
             print(e)
 
-# obj = sqlDB()
+
+
+
+
 #
 # start = time.time()
 # obj.zillowUpdate('testj', 'main_source_file', 'id', 'CurDeliveryAddr','new12', 'where CurDeliveryAddr is null', '(.*)', 1)
