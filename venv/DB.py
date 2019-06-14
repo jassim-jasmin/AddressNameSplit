@@ -64,7 +64,7 @@ class sqlDB:
                     if rePattern.search(searchData):
                         idAndPatternString.append((rePattern.search(searchData).group(int(gNo)),id))
             return idAndPatternString
-        except Exception as e:
+        excegit pt Exception as e:
             print(e)
 
     def insertField(self, tableName, idColumnName, searchColumnName, insertColumnName, sqlWhere, pyRe, gNo):
