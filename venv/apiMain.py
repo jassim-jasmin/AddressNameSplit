@@ -23,7 +23,7 @@ def extract():
 
         status = split.orderedExtractZillow(content['schemaName'], content['tableName'], content['idColumn'], content['fieldName'])
         if status == 1:
-            return jsonify({"success":"Split completed"})
+            return jsonify({"success":"Split completed","fields":content['fieldName'] + ", " + content['fieldName'] + "_name_extract, " + content['fieldName'] + "_address_extract, " + content['fieldName'] + "_no_match"})
         else:
             print("string: ",str(status))
             return jsonify({"error": str(status)})

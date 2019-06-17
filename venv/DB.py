@@ -44,7 +44,6 @@ class sqlDB:
     def checkColumn(self,tableName, id):
         try:
             sql = 'select ' + id + ' from ' + tableName
-            print(sql)
             mycursor = self.mydb.cursor(buffered=True)
             mycursor.execute(sql)
             return 1
