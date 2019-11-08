@@ -33,7 +33,7 @@
               },
               {
                 "pattern": "((^|^[pP] *|^[bB] *|^[oO0] *)([bB][oO0iI][xX]) *[0-9]+$)",
-                "where": "like '%box%'",
+                "where": "not regexp '(([tT][Rr](([uU]?[sS][tT][eE]*)|([ ]+)|( *$)))|(([cC][\\/][oO0])|[%]|([iI1][cC][oO0])|([aA@][tT]+[nN])|([dD][eE][pP][tT]))|([aA@][kK][aA@])|([iI][nN][cC])|([lL][iI1][mM][iI1][tT][eE][dD])|([lL][lL][cC])|([lL][lL][Pp])|([pP][a@A][rR][tT][nN][eE][rR][sS][hH][iI1][pP])|([Cc][Oo0][Mm][Pp][Aa@][nN][yY])|([cC][o0O](([ ]+| *$)|([rR][pP][o0O]?[rR]?[a@A]?[tT]?[i1I]?[oO0]?[nN]?))))'",
                 "group": 1,
                 "_comment": "pb/o box 123                                                       5"
               },
@@ -98,7 +98,7 @@
                 "_comment": "2070 HIGHWAY 11 NW                                                 15"
               },
               {
-                "pattern": "^ *([pP] *[.,]? *[oO0] *[,.]? [a-zA-Z]* *([a-zA-Z]$|[0-9]+( *$)))",
+                "pattern": "^ *([pP] *[.,]? *[oO0] *[,.]?( +[a-zA-Z]*|[bB]) *([a-zA-Z]$|[0-9]+( *$)))",
                 "where": "regexp '[0-9]'",
                 "group": 1,
                 "_comment": "po test 123                                                        16"
@@ -149,7 +149,37 @@
                 "pattern": "^ *(( *(([nN][oO0][rR][tT][hH])|([sS][oO0][uU][tT][hH])|([wW][eE][sS][tT])|([eE][sS][tT])|([newsNEWS])|([Nn]([EWS]|[ews]) +)|([Ee]([NWS]|[nws]) +)|([Ww]([NES]|[nes]) +)|([Ss]([NEW]|[new])) +)) *[0-9]+ +.* (([nN][oO0][rR][tT][hH])|([sS][oO0][uU][tT][hH])|([wW][eE][sS][tT])|([eE][sS][tT])|([newsNEWS])|([Nn]([EWS]|[ews]) +)|([Ee]([NWS]|[nws]) +)|([Ww]([NES]|[nes]))))$",
                 "where": "regexp ' *^[nNeEwWsS]'",
                 "group": 1,
-                "_comment": "news 123 test news"
+                "_comment": "news 123 test news                                               24"
+              },
+              {
+                "pattern": "^([pP][Mm][Bb] *[ ,#.]* *[a-zA-z]? *[0-9a-zA-Z]+) *$",
+                "where": "like '%pmb%'",
+                "group": 1,
+                "_comment": "pmb test                                                         25"
+              },
+              {
+                "pattern": "^([sS][tT][oO0][rR][eE]* *[ ,#.]* *[a-zA-z]? *[0-9a-zA-Z]+) *$",
+                "where": "like '%stor%'",
+                "group": 1,
+                "_comment": "store test                                                           26"
+              },
+              {
+                "pattern": "^([uU][nN][iI1][tT][eE]* *[ #,.]* *[a-zA-z]? *[0-9a-zA-Z]+) *$",
+                "where": " like '%unit%'",
+                "group": 1,
+                "_comment": "unit test                                                        27"
+              },
+              {
+                "pattern": "^([aA@][pP][@aA]?[rR]?[tT]?[mM]?[eE]?[nN]?[tT]* *[ #,.]* *[a-zA-z]? *[0-9a-zA-Z]+) *$",
+                "where": " is not null",
+                "group": 1,
+                "_comment": "apt test                                                               28"
+              },
+              {
+                "pattern": "^([sS][uU]?[iI1]?[tT][eE]* *[a-zA-Z]?[#,. \\-]* *[0-9a-zA-Z]+) *$",
+                "where": " like '%s%t%'",
+                "group": 1,
+                "_comment": "suite test                                                                 29"
               }
             ],
   "name":
@@ -173,7 +203,7 @@
                 "_comment": "dated 123                                                          2"
               },
               {
-                "pattern": "^ *([tT][Rr][uU]?[sS]?[tT]?[eE]*[sS]?) *$",
+                "pattern": " *(^(?!( *[0-9]+)) *(.* [tT][Rr][uU]?[sS]?[tT]?[eE]*[sS]?)) *$",
                 "where": "like '%tr%'",
                 "group": 1,
                 "_comment": "trust                                                              3"
@@ -195,7 +225,7 @@
             [
               {
                 "pattern": "( *(.*))",
-                "where": "not regexp '(((^| )[sS][,.]?[uU][,.]?[iI][,.]?[tT][,.]?[eE][,.]?( |$))|((^| )[Uu][,.]?[nN][,.]?[iI][,.]?[tT][,.]?[eE]?[,.]?( |$))|((^| )[pP][,.]?[lL][,.]?[aA]?[,.]?[cC]?[,.]?[eE]?[,.]?( |$))|((^| )[Tt][,.]?[rR][,.]?[lL][,.]?[,.]?( |$))|((^| )[bB][,.]?[lL][,.]?[vV][,.]?[dD][,.]?( |$))|((^| )[pP][,.]?[lL][,.]?[aA][,.]?[zZ][,.]?[aA][,.]?( |$))|((^| )[rR][,.]?[oO0]?[,.]?[Uu]?[,.]?[tT][,.]?[eE]?[,.]?( |$))|((^| )[cC][,.]?[tT][,.]?( |$))|((^| )[pP][,.]?[iI][,.]?[kK][,.]?[eE][,.]?( |$))|((^| )[pP][,.]?[aA]?[,.]?[rR]?[,.]?[kK][,.]?[wW]?[,.]?[aA]?[,.]?[yY]?[,.]?( |$))|((^| )[hH][,.]?[iI]?[,.]?[gG]?[,.]?[hH]?[,.]?[wW][,.]?[aA]?[,.]?[yY][,.]?( |$))|((^| )[Ll][,.]?[aA]?[,.]?[nN][,.]?[eE]?[,.]?( |$))|((^| )[cC][,.]?[iI][,.]?[rR][,.]?[cC]?[,.]?[lL]?[,.]?[eE]?[,.]?( |$))|((^| )[Aa][,.]?[vV][,.]?[eE][,.]?[nN]?[,.]?[uU]?[,.]?[eE]?[,.]?( |$))|((^| )[dD][,.]?[rR][,.]?[iI]?[,.]?[vV]?[,.][eE]?[,.]?( |$))|((^| )[sS][,.]?[tT][.,]?[rR]?[,.]?[eE]?[,.][eE]?[,.]?[,.][tT][,.]( |$))|((^| )[pP] *[.,]? *[oO0] *[,.]? *[bB][,.]? *[oO0][.,]? *[xX][,.]?)|((^| )[0-9])|((^| )[sS][tT][rR]?[eE]?[eE]?[tT]?)( |$)|([dD][rR][iI]?[vV]?[eE]?)( |$)|((^| )[rR][oO0]?[aA]?[Dd])( |$))'",
+                "where": "not regexp '(((^| )[sS][,.]?[uU][,.]?[iI][,.]?[tT][,.]?[eE][,.]?( |$))|((^| )[Uu][,.]?[nN][,.]?[iI][,.]?[tT][,.]?[eE]?[,.]?( |$))|((^| )[pP][,.]?[lL][,.]?[aA]?[,.]?[cC]?[,.]?[eE]?[,.]?( |$))|((^| )[Tt][,.]?[rR][,.]?[lL][,.]?[,.]?( |$))|((^| )[bB][,.]?[lL][,.]?[vV][,.]?[dD][,.]?( |$))|((^| )[pP][,.]?[lL][,.]?[aA][,.]?[zZ][,.]?[aA][,.]?( |$))|((^| )[rR][,.]?[oO0]?[,.]?[Uu]?[,.]?[tT][,.]?[eE]?[,.]?( |$))|((^| )[cC][,.]?[tT][,.]?( |$))|((^| )[pP][,.]?[iI][,.]?[kK][,.]?[eE][,.]?( |$))|((^| )[pP][,.]?[aA]?[,.]?[rR]?[,.]?[kK][,.]?[wW]?[,.]?[aA]?[,.]?[yY]?[,.]?( |$))|((^| )[hH][,.]?[iI]?[,.]?[gG]?[,.]?[hH]?[,.]?[wW][,.]?[aA]?[,.]?[yY][,.]?( |$))|((^| )[Ll][,.]?[aA]?[,.]?[nN][,.]?[eE]?[,.]?( |$))|((^| )[cC][,.]?[iI][,.]?[rR][,.]?[cC]?[,.]?[lL]?[,.]?[eE]?[,.]?( |$))|((^| )[Aa][,.]?[vV][,.]?[eE][,.]?[nN]?[,.]?[uU]?[,.]?[eE]?[,.]?( |$))|((^| )[dD][,.]?[rR][,.]?[iI]?[,.]?[vV]?[,.][eE]?[,.]?( |$))|((^| )[sS][,.]?[tT][.,]?[rR]?[,.]?[eE]?[,.][eE]?[,.]?[,.][tT][,.]( |$))|((^| )[pP] *[.,]? *[oO0] *[,.]? *[bB][,.]? *[oO0][.,]? *[xX][,.]?)|([0-9])|((^| )[sS][tT][rR]?[eE]?[eE]?[tT]?)( |$)|([dD][rR][iI]?[vV]?[eE]?)( |$)|((^| )[rR][oO0]?[aA]?[Dd])( |$)|([bB][oO0][xX]))'",
                 "group": 2,
                 "_comment": "all other possible name which doesnt have property of address      0"
               },
@@ -203,82 +233,152 @@
                 "pattern": "(^( *)((([Cc][oO0][rR]?[pP]?[oO0]?[rR]?[aA@]?[tT]?[i1I]?[oO0]?[nN]?)|([dD][eE][pP][aA]?[rR]?[Tt][mM]?[eE]?[nN]?[Tt]?)|([iI][nN][cC][oO0]?[rR]?[pP]?[oO0]?[rR]?[aA]?[tT]?[eE]?[dD]?))( +|$) *[#]? *[0-9a-zA-Z#]+ *[0-9a-zA-Z#]* *[0-9a-zA-Z#]*)( *$))",
                 "where": "regexp '^ *(([iI][nN][cC])|([dD][Ee][pP])|([cC][oO0][rR]))'",
                 "group": 1,
-                "_comment": "start with inc/dep/cor  (remove this when logic was incorrect below code will work)   CORP TAX DEPT 20210      2"
+                "_comment": "start with inc/dep/cor  (remove this when logic was incorrect below code will work)   CORP TAX DEPT 20210      1"
               },
               {
                 "pattern": "(^( *)((([Cc][oO0][rR]?[pP]?[oO0]?[rR]?[aA@]?[tT]?[i1I]?[oO0]?[nN]?)|([dD][eE][pP][aA]?[rR]?[Tt][mM]?[eE]?[nN]?[Tt]?)|([iI][nN][cC][oO0]?[rR]?[pP]?[oO0]?[rR]?[aA]?[tT]?[eE]?[dD]?))( +|$) *[#]? *[0-9a-zA-Z#]+)( *$))",
                 "where": "regexp '^ *(([iI][nN][cC])|([dD][Ee][pP])|([cC][oO0][rR]))'",
                 "group": 1,
-                "_comment": "start with inc/dep/cor                                             3"
+                "_comment": "start with inc/dep/cor                                             2"
               },
               {
                 "pattern": "^ *(%.* *((((([Cc][oO0][rR]?[pP]?[oO0]?[rR]?[aA@]?[tT]?[i1I]?[oO0]?[nN]?)|([dD][eE][pP][aA]?[rR]?[Tt][mM]?[eE]?[nN]?[Tt]?)|([iI][nN][cC][oO0]?[rR]?[pP]?[oO0]?[rR]?[aA]?[tT]?[eE]?[dD]?))( +|$))))$)",
                 "where": "regexp '[%]'",
                 "group": 1,
-                "_comment": "% test cor/dev/inc                                                 4"
+                "_comment": "% test cor/dev/inc                                                 3"
               },
               {
-                "pattern": "^ *((([cC][\\/][oO0])|[%]|([iI1][cC][oO0])|([aA@][tT][nN])|([dD][eE][pP][tT]) .*))",
-                "where": "not regexp '(((^| )[sS][,.]?[uU][,.]?[iI][,.]?[tT][,.]?[eE][,.]?( |$))|((^| )[Uu][,.]?[nN][,.]?[iI][,.]?[tT][,.]?[eE]?[,.]?( |$))|((^| )[pP][,.]?[lL][,.]?[aA]?[,.]?[cC]?[,.]?[eE]?[,.]?( |$))|((^| )[Tt][,.]?[rR][,.]?[lL][,.]?[,.]?( |$))|((^| )[bB][,.]?[lL][,.]?[vV][,.]?[dD][,.]?( |$))|((^| )[pP][,.]?[lL][,.]?[aA][,.]?[zZ][,.]?[aA][,.]?( |$))|((^| )[rR][,.]?[oO0]?[,.]?[Uu]?[,.]?[tT][,.]?[eE]?[,.]?( |$))|((^| )[cC][,.]?[tT][,.]?( |$))|((^| )[pP][,.]?[iI][,.]?[kK][,.]?[eE][,.]?( |$))|((^| )[pP][,.]?[aA]?[,.]?[rR]?[,.]?[kK][,.]?[wW]?[,.]?[aA]?[,.]?[yY]?[,.]?( |$))|((^| )[hH][,.]?[iI]?[,.]?[gG]?[,.]?[hH]?[,.]?[wW][,.]?[aA]?[,.]?[yY][,.]?( |$))|((^| )[Ll][,.]?[aA]?[,.]?[nN][,.]?[eE]?[,.]?( |$))|((^| )[cC][,.]?[iI][,.]?[rR][,.]?[cC]?[,.]?[lL]?[,.]?[eE]?[,.]?( |$))|((^| )[Aa][,.]?[vV][,.]?[eE][,.]?[nN]?[,.]?[uU]?[,.]?[eE]?[,.]?( |$))|((^| )[dD][,.]?[rR][,.]?[iI]?[,.]?[vV]?[,.][eE]?[,.]?( |$))|((^| )[sS][,.]?[tT][.,]?[rR]?[,.]?[eE]?[,.][eE]?[,.]?[,.][tT][,.]( |$))|((^| )[pP] *[.,]? *[oO0] *[,.]? *[bB][,.]? *[oO0][.,]? *[xX][,.]?)|((^| )[0-9])|((^| )[sS][tT][rR]?[eE]?[eE]?[tT]?)( |$)|([dD][rR][iI]?[vV]?[eE]?)( |$)|((^| )[rR][oO0]?[aA]?[Dd])( |$))'",
+                "pattern": "^ *((([cC][\\/][oO0])|[%]|([iI1][cC][oO0])|([aA@][tT][nN])|([dD][eE][pP][tT])).*)",
+                "where": "not regexp '(((^| )[sS][,.]?[uU][,.]?[iI][,.]?[tT][,.]?[eE][,.]?( |$))|((^| )[Uu][,.]?[nN][,.]?[iI][,.]?[tT][,.]?[eE]?[,.]?( |$))|((^| )[pP][,.]?[lL][,.]?[aA]?[,.]?[cC]?[,.]?[eE]?[,.]?( |$))|((^| )[Tt][,.]?[rR][,.]?[lL][,.]?[,.]?( |$))|((^| )[bB][,.]?[lL][,.]?[vV][,.]?[dD][,.]?( |$))|((^| )[pP][,.]?[lL][,.]?[aA][,.]?[zZ][,.]?[aA][,.]?( |$))|((^| )[rR][,.]?[oO0]?[,.]?[Uu]?[,.]?[tT][,.]?[eE]?[,.]?( |$))|((^| )[cC][,.]?[tT][,.]?( |$))|((^| )[pP][,.]?[iI][,.]?[kK][,.]?[eE][,.]?( |$))|((^| )[pP][,.]?[aA]?[,.]?[rR]?[,.]?[kK][,.]?[wW]?[,.]?[aA]?[,.]?[yY]?[,.]?( |$))|((^| )[hH][,.]?[iI]?[,.]?[gG]?[,.]?[hH]?[,.]?[wW][,.]?[aA]?[,.]?[yY][,.]?( |$))|((^| )[Ll][,.]?[aA]?[,.]?[nN][,.]?[eE]?[,.]?( |$))|((^| )[cC][,.]?[iI][,.]?[rR][,.]?[cC]?[,.]?[lL]?[,.]?[eE]?[,.]?( |$))|((^| )[Aa][,.]?[vV][,.]?[eE][,.]?[nN]?[,.]?[uU]?[,.]?[eE]?[,.]?( |$))|((^| )[dD][,.]?[rR][,.]?[iI]?[,.]?[vV]?[,.][eE]?[,.]?( |$))|((^| )[sS][,.]?[tT][.,]?[rR]?[,.]?[eE]?[,.][eE]?[,.]?[,.][tT][,.]( |$))|((^| )[pP] *[.,]? *[oO0] *[,.]? *[bB][,.]? *[oO0][.,]? *[xX][,.]?)|((^| )[0-9])|((^| )[sS][tT][rR]?[eE]?[eE]?[tT]?)( |$)|([dD][rR][iI]?[vV]?[eE]?)( |$)|((^| )[rR][oO0]?[aA]?[Dd])( |$)|([bB][oO0][xX])|([pP][oO0][bB]))'",
                 "group": 1,
-                "_comment": "not match with address pattern start with c/o,%                    5"
+                "_comment": "not match with address pattern start with c/o,%                    4"
               }
             ],
   "addressPartial":
             [
               {
-                "pattern": "^( *[,.]?)([0-9].*)",
-                "where": "regexp '[0-9]'",
-                "group": 2,
-                "_comment": "all other possible address start with number                       0"
-              },
-              {
-                "pattern": " *(.* +(( +SUITE($| +))|((^UNIT +)|( +UNITE?($| +)))|( *PLACE($| +))|( +PL($| +))|( +TRL($| +))|( +BLVD($| +))|( +PLAZA($| +))|( +PL($| +))|( +RT($| +))|( +ROUTE($| +))|( +CT($| +))|( +PIKE($| +))|( +PKY($| +))|( +PK +)|( +PARKWAY +)|( +HWY($| +))|( +HIGHWAY($| +))|( +LN($| +))|( +LANE($| +))|( CIRCLE($| +))|( +CIR($| +))|( +AVE($| +))|( +AVENUE($| +))|( +DR($| +))|( +DRIVE($| +))|([Rr][oO0]?[aA]?[dD])|([sS][tT][rR]?[eE]?[eE]?[tT]?)|([rR][oO0]?[aA]?[Dd])|([wW][aA@][yY]))$)",
-                "where": "is not null",
-                "group": 1,
-                "_comment": "end with _addressPattern                        WRONG PROBABLY      1"
-              },
-              {
                 "pattern": "^( *)((( *(([nN][oO0][rR][tT][hH])|([sS][oO0][uU][tT][hH])|([wW][eE][sS][tT])|([eE][sS][tT])|([newsNEWS])|([Nn]([EWS]|[ews]) +)|([Ee]([NWS]|[nws]) +)|([Ww]([NES]|[nes]) +)|([Ss]([NEW]|[new])) +))?|^) *((([0-9]+ *)?(([pP][oO0][sS][tT] *[oO0][fF][fF][iI][cC][eE])|([Pp] *[.,]*[\\[]? *[0OoBbpP]? *[.,]* *[0OoBbpP]? *[.,]* *[,.]* *)) *[Bb] *[,.]*[OoiI] *[.,]*[Xx] *[,.]*).*))",
                 "where": "like '%box%'",
                 "group": 2,
-                "_comment": "123/NEWS/_ post office/p\\ob box test                                     2"
+                "_comment": "123/NEWS/_ post office/p\\ob box test                                     1"
               },
               {
                 "pattern": "^ *([pP] *[.,]? *[oO0] *[,.]? .* *([a-zA-Z]$|[0-9]+( *$)))",
                 "where": "is not null",
                 "group": 1,
-                "_comment": "P. O. DRAWER 2128 MD095-03                                         3"
+                "_comment": "P. O. DRAWER 2128 MD095-03                                         2"
               },
               {
-                "pattern": "^ *(((SUITE($| +))|((UNIT +)|(UNITE?($| +)))|(PLACE($| +))|(PL($| +))|(TRL($| +))|(BLVD($| +))|(PLAZA($| +))|(PL($| +))|(RT($| +))|(ROUTE($| +))|(CT($| +))|(PIKE($| +))|(PKY($| +))|(PK +)|(PARKWAY +)|(HWY($| +))|(HIGHWAY($| +))|(LN($| +))|(LANE($| +))|(CIRCLE($| +))|(CIR($| +))|(AVE($| +))|(AVENUE($| +))|(DR($| +))|(DRIVE($| +))|([Rr][oO0]?[aA]?[dD])|([sS][tT][rR]?[eE]?[eE]?[tT]?)|([rR][oO0]?[aA]?[Dd])|([wW][aA@][yY])) *[0-9]+)$",
+                "pattern": "^ *(((([sS][uU][i1I][tT][eE]*($| +))|([Uu][nN][iI1][tT][eE]*($| +)))|([pP][lL1][aA][cC][cE]*($| +))|([pP][lL1]($| +))|([tT][rR][lL]($| +))|([bB][lL1][vV][dD]($| +))|([pP][l1L][aA][zZ][aA@]($| +))|([pP][lL1]($| +))|([rR][tT]($| +))|([rR][oO0][uU][tT][eE]($| +))|([cC][tT]($| +))|([pP][i1I][kK][eE]*($| +))|([pP][kK][yY]($| +))|([pP][kK] +)|([pP][a@A][rR][kK][wW][@Aa][yY] +)|([hH][wW][yY]($| +))|([hH][i1I][gG][hH][wW][a@A][yY]($| +))|([l1L][nN]($| +))|([l1L][a@A][nN][eE]($| +))|([cC][iI][rR][cC][lL][eE]($| +))|([cC][i1I][rR]($| +))|([a@A][vV][eE]($| +))|([a@A][vV][eE][nN][uU][eE]($| +))|([dD][rR]($| +))|([dD][rR][i1I][vV][eE]($| +))|([Rr][oO0]?[aA]?[dD])|([sS][tT][rR]?[eE]?[eE]?[tT]?)|([rR][oO0]?[aA]?[Dd])|([wW][aA@][yY])) *([0-9]+|[a-zA-Z]) *)$",
                 "where": "is not null",
                 "group": 1,
-                "_comment": "addressPattern end with  number    4"
+                "_comment": "addressPattern end with  number    3"
               },
               {
                 "pattern": "^ *((( +SUITE($| +))|((^UNIT +)|( +UNITE?($| +)))|( *PLACE($| +))|( +PL($| +))|( +TRL($| +))|( +BLVD($| +))|( +PLAZA($| +))|( +PL($| +))|( +RT($| +))|( +ROUTE($| +))|( +CT($| +))|( +PIKE($| +))|( +PKY($| +))|( +PK +)|( +PARKWAY +)|( +HWY($| +))|( +HIGHWAY($| +))|( +LN($| +))|( +LANE($| +))|( CIRCLE($| +))|( +CIR($| +))|( +AVE($| +))|( +AVENUE($| +))|( +DR($| +))|( +DRIVE($| +))|([Rr][oO0]?[aA]?[dD])|([sS][tT][rR]?[eE]?[eE]?[tT]?)|([rR][oO0]?[aA]?[Dd])|([wW][aA@][yY])) *[0-9]+.*((( +SUITE($| +))|((^UNIT +)|( +UNITE?($| +)))|( *PLACE($| +))|( +PL($| +))|( +TRL($| +))|( +BLVD($| +))|( +PLAZA($| +))|( +PL($| +))|( +RT($| +))|( +ROUTE($| +))|( +CT($| +))|( +PIKE($| +))|( +PKY($| +))|( +PK +)|( +PARKWAY +)|( +HWY($| +))|( +HIGHWAY($| +))|( +LN($| +))|( +LANE($| +))|( CIRCLE($| +))|( +CIR($| +))|( +AVE($| +))|( +AVENUE($| +))|( +DR($| +))|( +DRIVE($| +))|([Rr][oO0]?[aA]?[dD])|([sS][tT][rR]?[eE]?[eE]?[tT]?)|([rR][oO0]?[aA]?[Dd])|([wW][aA@][yY])))$)",
                 "where": "regexp '[0-9]'",
                 "group": 1,
-                "_comment": "addressPattern 123 test addressPattern                             5"
+                "_comment": "addressPattern 123 test addressPattern                             4"
               },
               {
                 "pattern": "^ *(#[0-9]+ *$)",
                 "where": "regexp '[#]'",
                 "group": 1,
-                "_comment": "#123                                                               6"
+                "_comment": "#123                                                               5"
               },
               {
                 "pattern": "^ *([dD][Aa]?[tT][eE]?[dD].*)",
                 "where": "like '%d%t%d%'",
                 "group": 1,
-                "_comment": "taking all combination of bigin with date                          7"
+                "_comment": "taking all combination of bigin with date                          6"
               },
               {
                 "pattern": "(^ *)((([sS][,.]?[uU][,.]?[iI][,.]?[tT][,.]?[eE]*[,.]?( | *$))|([Uu][,.]?[nN][,.]?[iI][,.]?[tT][,.]?[eE]*[,.]?( | *$))|([pP][,.]?[lL][,.]?[aA]?[,.]?[cC]?[,.]?[eE]?[,.]?( | *$))|([Tt][,.]?[rR][,.]?[lL][,.]?[,.]?( | *$))|([bB][,.]?[lL][,.]?[vV][,.]?[dD][,.]?( | *$))|([pP][,.]?[lL][,.]?[aA][,.]?[zZ][,.]?[aA][,.]?( | *$))|([rR][,.]?[oO0]?[,.]?[Uu]?[,.]?[tT][,.]?[eE]?[,.]?( | *$))|([cC][,.]?[tT][,.]?( | *$))|([pP][,.]?[iI][,.]?[kK][,.]?[eE][,.]?( | *$))|([pP][,.]?[aA]?[,.]?[rR]?[,.]?[kK][,.]?[wW]?[,.]?[aA]?[,.]?[yY]?[,.]?( | *$))|([hH][,.]?[iI]?[,.]?[gG]?[,.]?[hH]?[,.]?[wW][,.]?[aA]?[,.]?[yY][,.]?( | *$))|([Ll][,.]?[aA]?[,.]?[nN][,.]?[eE]?[,.]?( | *$))|([cC][,.]?[iI][,.]?[rR][,.]?[cC]?[,.]?[lL]?[,.]?[eE]?[,.]?( | *$))|([Aa][,.]?[vV][,.]?[eE][,.]?[nN]?[,.]?[uU]?[,.]?[eE]*[,.]?( | *$))|([dD][,.]?[rR][,.]?[iI]?[,.]?[vV]?[,.][eE]*[,.]?( | *$))|([sS][,.]?[tT][.,]?[rR]?[,.]?[eE]?[,.][eE]?[,.]?[,.][tT][,.]( | *$))|([pP] *[.,]? *[oO0] *[,.]? *[bB][,.]? *[oO0][.,]? *[xX][,.]?)|([0-9])|([sS][tT][rR]?[eE]?[eE]?[tT]?)( | *$)|([dD][rR][iI]?[vV]?[eE]*)( | *$)|([rR][oO0]?[aA]?[Dd])) *[0-9]+.*)",
                 "where": "is not null",
                 "group": 2,
-                "_comment": "start with addressPattern 123 test"
+                "_comment": "start with addressPattern 123 test                                    7"
+              },
+              {
+                "pattern": "^ *([%]|([cC][\\/][oO0])) *(([ ,.-]*)([pP]([ ,.-]*)[oO]([ ,.-]*)[sS]?([ ,.-]*)[tT]?([ ,.-]*)[oO]?([ ,.-]*)[fF]?([ ,.-]*)[fF]?([ ,.-]*)[iI1]?([ ,.-]*)[cC]?([ ,.-]*)[eE]?([ ,.-]*)[bB]([ ,.-]*)[oO0]([ ,.-]*)[xX])([ ,.-\\/]*).*)",
+                "where": "like '%box%'",
+                "group": 3,
+                "_comment": "%po box test                                                       8"
+              },
+              {
+                "pattern": "^ *([bB][oO0][xX] *[0-9]+ *.*(([sS][,.]?[uU][,.]?[iI][,.]?[tT][,.]?[eE]*[,.]?( | *$))|([Uu][,.]?[nN][,.]?[iI][,.]?[tT][,.]?[eE]*[,.]?( | *$))|([pP][,.]?[lL][,.]?[aA]?[,.]?[cC]?[,.]?[eE]?[,.]?( | *$))|([Tt][,.]?[rR][,.]?[lL][,.]?[,.]?( | *$))|([bB][,.]?[lL][,.]?[vV][,.]?[dD][,.]?( | *$))|([pP][,.]?[lL][,.]?[aA][,.]?[zZ][,.]?[aA][,.]?( | *$))|([rR][,.]?[oO0]?[,.]?[Uu]?[,.]?[tT][,.]?[eE]?[,.]?( | *$))|([cC][,.]?[tT][,.]?( | *$))|([pP][,.]?[iI][,.]?[kK][,.]?[eE][,.]?( | *$))|([pP][,.]?[aA]?[,.]?[rR]?[,.]?[kK][,.]?[wW]?[,.]?[aA]?[,.]?[yY]?[,.]?( | *$))|([hH][,.]?[iI]?[,.]?[gG]?[,.]?[hH]?[,.]?[wW][,.]?[aA]?[,.]?[yY][,.]?( | *$))|([Ll][,.]?[aA]?[,.]?[nN][,.]?[eE]?[,.]?( | *$))|([cC][,.]?[iI][,.]?[rR][,.]?[cC]?[,.]?[lL]?[,.]?[eE]?[,.]?( | *$))|([Aa][,.]?[vV][,.]?[eE][,.]?[nN]?[,.]?[uU]?[,.]?[eE]*[,.]?( | *$))|([dD][,.]?[rR][,.]?[iI]?[,.]?[vV]?[,.][eE]*[,.]?( | *$))|([sS][,.]?[tT][.,]?[rR]?[,.]?[eE]?[,.][eE]?[,.]?[,.][tT][,.]( | *$))|([pP] *[.,]? *[oO0] *[,.]? *[bB][,.]? *[oO0][.,]? *[xX][,.]?)|([0-9])|([sS][tT][rR]?[eE]?[eE]?[tT]?)( | *$)|([dD][rR][iI]?[vV]?[eE]*)( | *$)|([rR][oO0]?[aA]?[Dd])))",
+                "where": "like '%box%'",
+                "group": 1,
+                "_comment": "box 123 test addressPattern                                          9"
+              },
+              {
+                "pattern": "(^ *)(([Cc][\\/][oO0])|([%])|([aA@][tT][tT][nN])|([dD][eE][pP][tT])|([iI1][cC][oO0])) ((([sS][,.]?[uU][,.]?[iI][,.]?[tT][,.]?[eE]*[,.]?( | *$))|([Uu][,.]?[nN][,.]?[iI][,.]?[tT][,.]?[eE]*[,.]?( | *$))|([pP][,.]?[lL][,.]?[aA]?[,.]?[cC]?[,.]?[eE]?[,.]?( | *$))|([Tt][,.]?[rR][,.]?[lL][,.]?[,.]?( | *$))|([bB][,.]?[lL][,.]?[vV][,.]?[dD][,.]?( | *$))|([pP][,.]?[lL][,.]?[aA][,.]?[zZ][,.]?[aA][,.]?( | *$))|([rR][,.]?[oO0]?[,.]?[Uu]?[,.]?[tT][,.]?[eE]?[,.]?( | *$))|([cC][,.]?[tT][,.]?( | *$))|([pP][,.]?[iI][,.]?[kK][,.]?[eE][,.]?( | *$))|([pP][,.]?[aA]?[,.]?[rR]?[,.]?[kK][,.]?[wW]?[,.]?[aA]?[,.]?[yY]?[,.]?( | *$))|([hH][,.]?[iI]?[,.]?[gG]?[,.]?[hH]?[,.]?[wW][,.]?[aA]?[,.]?[yY][,.]?( | *$))|([Ll][,.]?[aA]?[,.]?[nN][,.]?[eE]?[,.]?( | *$))|([cC][,.]?[iI][,.]?[rR][,.]?[cC]?[,.]?[lL]?[,.]?[eE]?[,.]?( | *$))|([Aa][,.]?[vV][,.]?[eE][,.]?[nN]?[,.]?[uU]?[,.]?[eE]*[,.]?( | *$))|([dD][,.]?[rR][,.]?[iI]?[,.]?[vV]?[,.][eE]*[,.]?( | *$))|([sS][,.]?[tT][.,]?[rR]?[,.]?[eE]?[,.][eE]?[,.]?[,.][tT][,.]( | *$))|([pP] *[.,]? *[oO0] *[,.]? *[bB][,.]? *[oO0][.,]? *[xX][,.]?)|([0-9])|([sS][tT][rR]?[eE]?[eE]?[tT]?)( | *$)|([dD][rR][iI]?[vV]?[eE]*)( | *$)|([rR][oO0]?[aA]?[Dd])) *[0-9]+.*)",
+                "where": " is not null",
+                "group": 5,
+                "_comment": "c/o % addressPattern                                                  10"
+              },
+              {
+                "pattern": "(^[pP][oO0][xX] *[bB][oO0][xX].*) *$",
+                "where": " like 'po%box%'",
+                "group": 1,
+                "_comment": "pox box test                                                           11"
+              },
+              {
+                "pattern": "^([mM][aA@][iI1][lL] *[bB][oO0][xX].*)( |$)",
+                "where": "like '%box%'",
+                "group": 1,
+                "_comment": "mail box                                                             12"
+              },
+              {
+                "pattern": "^([mM][aA@][iI1][lL1].*) *",
+                "where": " like '%mail%'",
+                "group": 1,
+                "_comment": "mail test                                                            13"
+              },
+              {
+                "pattern": "^ *(([nN]|[eE]|[wW]|[sS]) .*(([Ss][uU]?[i1I]?[tT][eE])|(UNITE?)|([Pp][lL][aA@]?[cC]?[eE]?)|(TRL)|(BLVD)|([pP][lL][a@A][zZ][a@A])|([Rr][o0O]?[uU]?[tT][eE]?)|(CT)|([pP][a@A]?[rR]?[kK][wW]?[a@A]?[yY])|([hH][i1I]?[gG]?[hH]?[wW][a@A]?[yY])|([l1L][a@A]?[nN][eE]?)|([cC][i1I][rR][cC]?[l1L]?[eE]?)|([a@A][vV][eE][nN][uU][eE])|([dD][rR][i1I][vV][eE])|([Rr][oO0]?[aA]?[dD])|([sS][tT][rR]?[eE]?[eE]?[tT]?)|([wW][aA@][yY]))*[0-9] *$)",
+                "where": "regexp '^ *(([nN]|[eE]|[wW]|[sS]) .*(([Ss][uU]?[i1I]?[tT][eE])|(UNITE?)|([Pp][lL][aA@]?[cC]?[eE]?)|(TRL)|(BLVD)|([pP][lL][a@A][zZ][a@A])|([Rr][o0O]?[uU]?[tT][eE]?)|(CT)|([pP][a@A]?[rR]?[kK][wW]?[a@A]?[yY])|([hH][i1I]?[gG]?[hH]?[wW][a@A]?[yY])|([l1L][a@A]?[nN][eE]?)|([cC][i1I][rR][cC]?[l1L]?[eE]?)|([a@A][vV][eE][nN][uU][eE])|([dD][rR][i1I][vV][eE])|([Rr][oO0]?[aA]?[dD])|([sS][tT][rR]?[eE]?[eE]?[tT]?)|([wW][aA@][yY]))*[0-9] *$)'",
+                "group": 1,
+                "_comment": "news test addressPattern 123"
+              },
+              {
+                "pattern": "^ *(([sS][tT]) *(([Ss][uU]?[i1I]?[tT][eE])|(UNITE?)|([Pp][lL][aA@]?[cC]?[eE]?)|(TRL)|(BLVD)|([pP][lL][a@A][zZ][a@A])|([Rr][o0O]?[uU]?[tT][eE]?)|(CT)|([pP][a@A]?[rR]?[kK][wW]?[a@A]?[yY])|([hH][i1I]?[gG]?[hH]?[wW][a@A]?[yY])|([l1L][a@A]?[nN][eE]?)|([cC][i1I][rR][cC]?[l1L]?[eE]?)|([a@A][vV][eE][nN][uU][eE])|([dD][rR][i1I][vV][eE])|([Rr][oO0]?[aA]?[dD])|([sS][tT][rR]?[eE]?[eE]?[tT]?)|([wW][aA@][yY])) *[0-9] *$)",
+                "where": "regexp '^ *(([sS][tT]) *(([Ss][uU]?[i1I]?[tT][eE])|(UNITE?)|([Pp][lL][aA@]?[cC]?[eE]?)|(TRL)|(BLVD)|([pP][lL][a@A][zZ][a@A])|([Rr][o0O]?[uU]?[tT][eE]?)|(CT)|([pP][a@A]?[rR]?[kK][wW]?[a@A]?[yY])|([hH][i1I]?[gG]?[hH]?[wW][a@A]?[yY])|([l1L][a@A]?[nN][eE]?)|([cC][i1I][rR][cC]?[l1L]?[eE]?)|([a@A][vV][eE][nN][uU][eE])|([dD][rR][i1I][vV][eE])|([Rr][oO0]?[aA]?[dD])|([sS][tT][rR]?[eE]?[eE]?[tT]?)|([wW][aA@][yY])) *[0-9] *$)'",
+                "group": 1,
+                "_comment": "st addressPattern 123"
+              },
+              {
+                "pattern": "(^( *)(([0-9]+) *([a-zA-Z] *)*((( +SUITE($| +))|((^UNIT +)|( +UNITE?($| +)))|( *PLACE($| +))|( +PL($| +))|( +TRL($| +))|( +BLVD($| +))|( +PLAZA($| +))|( +PL($| +))|( +RT($| +))|( +ROUTE($| +))|( +CT($| +))|( +PIKE($| +))|( +PKY($| +))|( +PK +)|( +PARKWAY +)|( +HWY($| +))|( +HIGHWAY($| +))|( +LN($| +))|( +LANE($| +))|( CIRCLE($| +))|( +CIR($| +))|( +AVE($| +))|( +AVENUE($| +))|( +DR($| +))|( +DRIVE($| +))|([Rr][oO0]?)[aA]?[dD])|([sS][tT][rR]?[eE]?[eE]?[tT]?)|([rR][oO0]?[aA]?[Dd])|([wW][aA@][yY])|( +([wW]|[nN]|[eE]|[sS])))$))",
+                "where": "not regexp '(([Cc][oO0][rR]?[pP]?[oO0]?[rR]?[aA@]?[tT]?[i1I]?[oO0]?[nN]?)|([dD][eE][pP][aA]?[rR]?[Tt][mM]?[eE]?[nN]?[Tt]?)|([iI][nN][cC][oO0]?[rR]?[pP]?[oO0]?[rR]?[aA]?[tT]?[eE]?[dD]?)|([L1l][i1I]?[mM]?[iI1]?[tT]?[eE]?[dD]? *[Ll1][i1I]?[aA@]?[bB]?[lL1]?[iI1]?[tT]?[Yy]? *[Cc][Oo0]?[mM]?[Pp]?[aA@]?[nN]?[yY]?))'",
+                "group": 3,
+                "_comment": "123 test addressPattern cannot add this pattern contain llc, inc, corp other pattern may come which is not a adddress"
               }
-            ]
+            ],
+  "nameAddress":
+    [
+      {
+        "patternName": "^ *((([cC][\\/][oO0])|[%]|([iI1][cC][oO0])|([aA@][tT]+[nN])|([dD][eE][pP][tT]))([a-zA-Z @,.&]+)) ((([pP][\\. ]*[oO0][\\. ]*( |([sS][Tt] *[bB][oO0][xX])([oO0][fF][iI1][cC][eE]+)?))|([pP][mM][bB])).*[0-9]+$)",
+        "patternAddress": "^((([cC][\\/][oO0])|[%]|([iI1][cC][oO0])|([aA@][tT]+[nN])|([dD][eE][pP][tT]))([a-zA-Z @,.&]+)) ((([pP][\\. ]*[oO0][\\. ]*( |([sS][Tt] *[bB][oO0][xX])([oO0][fF][iI1][cC][eE]+)?))|([pP][mM][bB])).*[0-9]+$)",
+        "where": "regexp '(([cC][\\/][oO0])|[%]|([iI1][cC][oO0])|([aA@][tT]+[nN])|([dD][eE][pP][tT])) .* [0-9]+$'",
+        "groupName": "1",
+        "groupAddress": "8",
+        "_comment": "c/o name PO BOX 123      considering string in this logic ([a-zA-Z @,.&]+"
+      },
+      {
+        "patternName": "^ *((([cC][\\/][oO0])|[%]|([iI1][cC][oO0])|([aA@][tT]+[nN])|([dD][eE][pP][tT])) .*) +([0-9]+ .*((([sS][uU][i1I][tT][eE]*($| +))|([Uu][nN][iI1][tT][eE]*($| +)))|([pP][lL1][aA][cC][cE]*($| +))|([pP][lL1]($| +))|([tT][rR][lL]($| +))|([bB][lL1][vV][dD]($| +))|([pP][l1L][aA][zZ][aA@]($| +))|([pP][lL1]($| +))|([rR][tT]($| +))|([rR][oO0][uU][tT][eE]($| +))|([cC][tT]($| +))|([pP][i1I][kK][eE]*($| +))|([pP][kK][yY]($| +))|([pP][kK] +)|([pP][a@A][rR][kK][wW][@Aa][yY] +)|([hH][wW][yY]($| +))|([hH][i1I][gG][hH][wW][a@A][yY]($| +))|([l1L][nN]($| +))|([l1L][a@A][nN][eE]($| +))|([cC][iI][rR][cC][lL][eE]($| +))|([cC][i1I][rR]($| +))|([a@A][vV][eE]($| +))|([a@A][vV][eE][nN][uU][eE]($| +))|([dD][rR]($| +))|([dD][rR][i1I][vV][eE]($| +))|([Rr][oO0]?[aA]?[dD])|([sS][tT][rR]?[eE]?[eE]?[tT]?)|([rR][oO0]?[aA]?[Dd])|([wW][aA@][yY]))) *$",
+        "patternAddress": "^ *((([cC][\\/][oO0])|[%]|([iI1][cC][oO0])|([aA@][tT]+[nN])|([dD][eE][pP][tT])) .*) +([0-9]+ .*((([sS][uU][i1I][tT][eE]*($| +))|([Uu][nN][iI1][tT][eE]*($| +)))|([pP][lL1][aA][cC][cE]*($| +))|([pP][lL1]($| +))|([tT][rR][lL]($| +))|([bB][lL1][vV][dD]($| +))|([pP][l1L][aA][zZ][aA@]($| +))|([pP][lL1]($| +))|([rR][tT]($| +))|([rR][oO0][uU][tT][eE]($| +))|([cC][tT]($| +))|([pP][i1I][kK][eE]*($| +))|([pP][kK][yY]($| +))|([pP][kK] +)|([pP][a@A][rR][kK][wW][@Aa][yY] +)|([hH][wW][yY]($| +))|([hH][i1I][gG][hH][wW][a@A][yY]($| +))|([l1L][nN]($| +))|([l1L][a@A][nN][eE]($| +))|([cC][iI][rR][cC][lL][eE]($| +))|([cC][i1I][rR]($| +))|([a@A][vV][eE]($| +))|([a@A][vV][eE][nN][uU][eE]($| +))|([dD][rR]($| +))|([dD][rR][i1I][vV][eE]($| +))|([Rr][oO0]?[aA]?[dD])|([sS][tT][rR]?[eE]?[eE]?[tT]?)|([rR][oO0]?[aA]?[Dd])|([wW][aA@][yY]))) *$",
+        "where": "regexp '^ *((([cC][\\/][oO0])|[%]|([iI1][cC][oO0])|([aA@][tT]+[nN])|([dD][eE][pP][tT])) .*) +([0-9]+ .*((([sS][uU][i1I][tT][eE]*($| +))|([Uu][nN][iI1][tT][eE]*($| +)))|([pP][lL1][aA][cC][cE]*($| +))|([pP][lL1]($| +))|([tT][rR][lL]($| +))|([bB][lL1][vV][dD]($| +))|([pP][l1L][aA][zZ][aA@]($| +))|([pP][lL1]($| +))|([rR][tT]($| +))|([rR][oO0][uU][tT][eE]($| +))|([cC][tT]($| +))|([pP][i1I][kK][eE]*($| +))|([pP][kK][yY]($| +))|([pP][kK] +)|([pP][a@A][rR][kK][wW][@Aa][yY] +)|([hH][wW][yY]($| +))|([hH][i1I][gG][hH][wW][a@A][yY]($| +))|([l1L][nN]($| +))|([l1L][a@A][nN][eE]($| +))|([cC][iI][rR][cC][lL][eE]($| +))|([cC][i1I][rR]($| +))|([a@A][vV][eE]($| +))|([a@A][vV][eE][nN][uU][eE]($| +))|([dD][rR]($| +))|([dD][rR][i1I][vV][eE]($| +))|([Rr][oO0]?[aA]?[dD])|([sS][tT][rR]?[eE]?[eE]?[tT]?)|([rR][oO0]?[aA]?[Dd])|([wW][aA@][yY]))) *$'",
+        "groupName": "1",
+        "groupAddress": "7",
+        "_comment": "c/o test 123 test addresssPattern"
+      },
+      {
+        "patternName": "^ *((([cC][\\/][oO0])|[%]|([iI1][cC][oO0])|([aA@][tT]+[nN])|([dD][eE][pP][tT]))([a-zA-Z @,.&]+)) ((([pP][\\. ]*[oO0][\\. ]*( |([sS][Tt] *[bB][oO0][xX])([oO0][fF][iI1][cC][eE]+)?))|([pP][mM][bB])).*[0-9]*)",
+        "patternAddress": "^((([cC][\\/][oO0])|[%]|([iI1][cC][oO0])|([aA@][tT]+[nN])|([dD][eE][pP][tT]))([a-zA-Z @,.&]+)) ((([pP][\\. ]*[oO0][\\. ]*( |([sS][Tt] *[bB][oO0][xX])([oO0][fF][iI1][cC][eE]+)?))|([pP][mM][bB])).*[0-9]*)",
+        "where": "regexp '(([cC][\\/][oO0])|[%]|([iI1][cC][oO0])|([aA@][tT]+[nN])|([dD][eE][pP][tT])) .*'",
+        "groupName": "1",
+        "groupAddress": "8",
+        "_comment": "c/o name PO BOX 123"
+      }
+    ]
 }
+
