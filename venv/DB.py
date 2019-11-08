@@ -3,15 +3,27 @@ import re
 import time
 
 class sqlDB:
-    def defaultZillow(self):
-        self.sqlHost = '192.168.15.10'
-        self.sqlUserName = 'root'
-        self.sqlPassword = 'softinc'
+    def checkPrimaryKey(self, tableName, idColumnName):
+      try:
+        sql2 = "SHOW INDEX FROM " + tableName + " WHERE Key_name = 'PRIMARY' and Column_name = '" + idColumnName + "'"
+        mycursor = self.mydb.cursor(buffered=True)
+        mycursor.execute(sql2)
+        sqlFlag = len(mycursor.fetchall())
+        if sqlFlag == 1:
+          print('Primary key')
+          return 1
+        else:
+          print("Not a primary key")
+          return idColumnName +" is not Primary Key, provide an AUTO INCREMENT field"
 
-    def defaultLocal(self):
-        self.sqlHost = '192.168.15.63'
-        self.sqlUserName = 'root'
-        self.sqlPassword = 'softinc'
+      except Exception as e:
+        print(e)
+        return e
+
+    def sqlCredential(self, sqlHost, sqlUserName, sqlPassword):
+        self.sqlHost = sqlHost
+        self.sqlUserName = sqlUserName
+        self.sqlPassword = sqlPassword
 
     def connect(self):
         try:
@@ -44,7 +56,6 @@ class sqlDB:
     def checkColumn(self,tableName, id):
         try:
             sql = 'select ' + id + ' from ' + tableName
-            print(sql)
             mycursor = self.mydb.cursor(buffered=True)
             mycursor.execute(sql)
             return 1
@@ -56,12 +67,23 @@ class sqlDB:
     def createColumn(self, tableName, columnName):
         try:
             mycursor = self.mydb.cursor()
-            sql = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " LONGTEXT;"
+            sql = "ALTER TABLE " + tableName + " ADD COLUMN " + columnName + " VARCHAR(500);"
             #print(sql)
             mycursor.execute(sql)
             print("Column " + columnName + " added")
         except Exception as e:
             print("Column not create", e)
+
+    def sqlSelect(self, tableName, selectField, whereCondition):
+      try:
+        mycursor =  self.mydb.cursor()
+        sql = "select " + selectField + " from " + tableName + " where " + whereCondition + ";"
+        print(sql)
+        mycursor.execute(sql)
+        return mycursor
+      except Exception as e:
+        print("Exception",e)
+        return -1
 
     def count(self, tableName):
         try:
@@ -74,7 +96,50 @@ class sqlDB:
         except Exception as e:
             print("count", e)
 
-    def regexData(self, tableName, idColumnName, searchColumnName, sqlWhere, pyRe, gNo):
+    def updateMany(self,queryList):
+      try:
+        mycursor = self.mydb.cursor()
+        print(queryList)
+        mycursor.execute(queryList)
+        self.mydb.commit()
+      except Exception as e:
+        print(e)
+
+    def getRegexData(self,string, pattern, group):
+      try:
+        if string:
+          rePattern = eval("re.compile(r'" + pattern + "')")
+          searchResult = rePattern.search(string)
+          #print(searchResult,group,pattern)
+          if searchResult:
+            # print(string)
+            eData = searchResult.group(group)
+          else:
+            eData = None
+        else:
+          eData = None
+
+        return eData
+      except Exception as e:
+        print(e)
+
+    def getDataWithId(self, tableName, idColumnName, searchColumnName, sqlWhere):
+      try:
+        mycursor = self.mydb.cursor()
+        sql = "select " + idColumnName + "," + searchColumnName + " from " + tableName + " where " + sqlWhere
+        #print(sql)
+        mycursor.execute(sql)
+
+        idDataList = []
+        for id, searchData in mycursor:
+          idDataList.append((id,searchData))
+
+        return idDataList
+
+      except Exception as e:
+        print(e)
+
+    def regexData(self, tableName, idColumnName, searchColumnName, sqlWhere, pyRe, gNo, replaceString):
         try:
             mycursor = self.mydb.cursor()
             sql = "select " + idColumnName + "," + searchColumnName + " from " + tableName + " " + sqlWhere
@@ -90,8 +155,12 @@ class sqlDB:
                 rePattern = eval("re.compile(r'" + pyRe + "')")
 
                 if searchData:
+                    searchData = self.replcaeSpecialString(searchData, replaceString)
                     if rePattern.search(searchData):
-                        idAndPatternString.append((rePattern.search(searchData).group(int(gNo)),id))
+                        dataSeperate = rePattern.search(searchData).group(int(gNo))
+                        #dataSeperate = self.replcaeSpecialString(dataSeperate)
+                        finalString = (dataSeperate,id)
+                        idAndPatternString.append(finalString)
                         #print(mycursor.rowcount,index)
                         if (index%indexLimit == 0) or (mycursor.rowcount-1 == index):
                             dataIndex = dataIndex+1
@@ -111,26 +180,40 @@ class sqlDB:
         finally:
             self.mydb.commit()
 
-    def insertField(self, tableName, idColumnName, searchColumnName, insertColumnName, sqlWhere, pyRe, gNo):
+    def replcaeSpecialString(self, string, jsonReplaceSpecialStringData):
+        for replaceData in jsonReplaceSpecialStringData['main']:
+            if re.search(replaceData['string'], string, re.I):
+                string = string.replace(re.search(replaceData['string'], string, re.I).group(), replaceData['replace'])
+
+        # string = string.replace('\'',' ')
+        # string = string.replace('\\0','/O')
+        # string = string.replace('\"', '')
+        # string = string.replace("\\",'/')
+        # string = string.replace("/CO","C/O")
+        # string = string.replace("ATTN:","ATTN")
+
+        return string
+
+    def insertField(self, tableName, idColumnName, searchColumnName, insertColumnName, sqlWhere, pyRe, gNo, replaceString):
         try:
             mycursor = self.mydb.cursor()
-            data = self.regexData(tableName,idColumnName, searchColumnName, sqlWhere, pyRe, gNo)
+            data = self.regexData(tableName,idColumnName, searchColumnName, sqlWhere, pyRe, gNo, replaceString)
             for index,values in data.items():
                 mycursor.executemany("update " + tableName + " set " + insertColumnName + " = %s where " + idColumnName + " = %s", values)
         except Exception as e:
             print("insertField",e)
 
         finally:
-            print("DB commit")
+            #print("DB commit")
             self.mydb.commit()
 
-    def zillowUpdate(self, schemaName, tableName, idColumnName, searchColumnName,insertColumnName, sqlWhere, pyRe, gNo):
+    def zillowUpdate(self, schemaName, tableName, idColumnName, searchColumnName,insertColumnName, sqlWhere, pyRe, gNo, replaceString):
         try:
-            self.defaultZillow()
+            # self.sqlCredential(schemaName, ) # logic need to change
             self.connectSchema(schemaName)
             #self.createColumn(tableName, insertColumnName)
             #print(tableName, idColumnName, searchColumnName, insertColumnName, sqlWhere, pyRe, gNo)
-            self.insertField(tableName, idColumnName, searchColumnName, insertColumnName, sqlWhere, pyRe, gNo)
+            self.insertField(tableName, idColumnName, searchColumnName, insertColumnName, sqlWhere, pyRe, gNo, replaceString)
 
         except Exception as e:
             print("zillowUpdate",e)
@@ -178,6 +261,16 @@ class sqlDB:
         except Exception as e:
             print(e)
 
+    def coConcat(self, tableName, firstColumn, secondColumn):
+        try:
+            sqlFirstUPdate = "update " + tableName + " set " + firstColumn + " = " + " concat(rtrim(coalesce(" + firstColumn + ",'')), ' ', ltrim(coalesce(" + secondColumn + ",''))) where " + firstColumn + " regexp '(([cC][\/][oO0])|[%]|([aA@][tT][tT][nN])|([dD][eE][pP][tT])|([iI1][cC][oO0]))'"
+            sqlSecondUpdate = "update " + tableName + " set " + secondColumn + " = " + " null where " + firstColumn + "regexp '(([cC][\/][oO0])|[%]|([aA@][tT][tT][nN])|([dD][eE][pP][tT])|([iI1][cC][oO0]))'"
+            cursor = self.mydb.cursor()
+
+            cursor.execute(sqlFirstUPdate)
+            cursor.execute(sqlSecondUpdate)
+        except Exception as e:
+            print(e)
 
 
 
@@ -188,3 +281,4 @@ class sqlDB:
 # end = time.time()
 #
 # print(end-start)
+
